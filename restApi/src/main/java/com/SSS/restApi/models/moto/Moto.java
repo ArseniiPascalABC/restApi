@@ -1,5 +1,6 @@
-package com.SSS.restApi.models;
+package com.SSS.restApi.models.moto;
 
+import com.SSS.restApi.models.Vehicle;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,12 +8,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "cars")
-@Data
+@Table(name = "motos")
 @NoArgsConstructor
 @AllArgsConstructor
 @JacksonXmlRootElement
-public class Car {
+@Data
+public class Moto implements Vehicle{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
@@ -21,4 +22,5 @@ public class Car {
     private String brand;
     @Column(length = 100)
     private String model;
+
 }
