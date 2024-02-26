@@ -1,10 +1,11 @@
-package com.SSS.restApi.config;
+package com.SSS.restApi.config.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -19,40 +20,45 @@ import java.util.HashMap;
 @Configuration
 @PropertySource({"classpath:application.properties"})
 @EnableJpaRepositories(
-        basePackages = "com.SSS.restApi.repositories.moto",
-        entityManagerFactoryRef = "motoEntityManager",
-        transactionManagerRef = "motoTransactionManager"
+        basePackages = "com.SSS.restApi.repositories.car",
+        entityManagerFactoryRef = "carEntityManager",
+        transactionManagerRef = "carTransactionManager"
 )
-public class MotoPersistenceConfiguration {
+public class CarPersistenceConfiguration {
 
     @Autowired
     private Environment env;
 
+    @Primary
     @Bean
-    @ConfigurationProperties(prefix="spring.second-datasource")
-    public DataSource motoDataSource() {
+    @ConfigurationProperties(prefix="spring.datasource")
+    public DataSource carDataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean motoEntityManager() {
-        final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(motoDataSource());
-        em.setPackagesToScan("com.SSS.restApi.models.moto");
+    @Primary
+    public LocalContainerEntityManagerFactoryBean carEntityManager() {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(carDataSource());
+        em.setPackagesToScan(
+                new String[]{"com.SSS.restApi.models.car"});
 
-        final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
-        final HashMap<String, Object> properties = new HashMap<>();
+        HashMap<String, Object> properties = new HashMap<>();
         properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
         em.setJpaPropertyMap(properties);
 
         return em;
     }
+
     @Bean
-    public PlatformTransactionManager motoTransactionManager() {
+    @Primary
+    public PlatformTransactionManager carTransactionManager() {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(motoEntityManager().getObject());
+        transactionManager.setEntityManagerFactory(carEntityManager().getObject());
         return transactionManager;
     }
 }

@@ -1,10 +1,12 @@
-package com.SSS.restApi.controllers;
+package com.SSS.restApi.controllers.rest;
 
 import com.SSS.restApi.dao.CarDAO;
 import com.SSS.restApi.models.Vehicle;
 import com.SSS.restApi.models.car.Car;
+import com.SSS.restApi.models.moto.Moto;
 import com.SSS.restApi.repositories.car.CarRepository;
 import com.SSS.restApi.xmlWrapper.CarListResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/cars")
+@RequestMapping("/rest/cars")
 public class CarVehicleController implements VehicleController {
 
     private final CarRepository carRepository;
@@ -47,14 +49,19 @@ public class CarVehicleController implements VehicleController {
         return ResponseEntity.ok(carListResponse);
     }
 
-    public ResponseEntity<String> addVehicle(@RequestBody Vehicle vehicle) {
+    @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> addVehicle(@RequestBody String requestBody) {
         try {
+            Vehicle vehicle;
+            ObjectMapper mapper = new ObjectMapper();
+            vehicle = mapper.readValue(requestBody, Car.class);
+
             carDAO.save(vehicle);
             log.info("CarController addCar, car was added");
-            return ResponseEntity.status(HttpStatus.CREATED).body("<message>Запись добавлена</message>");
+            return ResponseEntity.status(HttpStatus.CREATED).body("<message>Запись добавлена в auto</message>");
         } catch (Exception e) {
             log.info("CarController addCar, car was not added");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("<message>Запись не была добавлена</message>");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("<message>Запись не была добавлена в auto</message>");
         }
     }
 

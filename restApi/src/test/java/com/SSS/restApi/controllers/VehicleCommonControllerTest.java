@@ -1,6 +1,5 @@
 package com.SSS.restApi.controllers;
 
-import com.SSS.restApi.models.Vehicle;
 import com.SSS.restApi.models.moto.Moto;
 import com.SSS.restApi.repositories.moto.MotoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;

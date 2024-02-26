@@ -1,11 +1,13 @@
-package com.SSS.restApi.controllers;
+package com.SSS.restApi.controllers.rest;
 
 
 import com.SSS.restApi.dao.MotoDAO;
 import com.SSS.restApi.models.Vehicle;
+import com.SSS.restApi.models.car.Car;
 import com.SSS.restApi.models.moto.Moto;
 import com.SSS.restApi.repositories.moto.MotoRepository;
 import com.SSS.restApi.xmlWrapper.MotoListResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/motos")
+@RequestMapping("/rest/motos")
 public class MotoVehicleController implements VehicleController {
 
     private final MotoRepository motoRepository;
@@ -49,8 +51,12 @@ public class MotoVehicleController implements VehicleController {
         return ResponseEntity.ok(motoListResponse);
     }
 
-    public ResponseEntity<String> addVehicle(@RequestBody Vehicle vehicle) {
+    @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> addVehicle(@RequestBody String requestBody) {
         try {
+            Vehicle vehicle;
+            ObjectMapper mapper = new ObjectMapper();
+            vehicle = mapper.readValue(requestBody, Moto.class);
             motoDao.save(vehicle);
             log.info("MotoController addVehicle,  was added");
             return ResponseEntity.status(HttpStatus.CREATED).body("<message>Запись добавлена в motos</message>");

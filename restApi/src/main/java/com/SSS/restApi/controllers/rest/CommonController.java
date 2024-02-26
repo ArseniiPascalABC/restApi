@@ -1,4 +1,4 @@
-package com.SSS.restApi.controllers;
+package com.SSS.restApi.controllers.rest;
 
 import com.SSS.restApi.dao.CarDAO;
 import com.SSS.restApi.dao.MotoDAO;
