@@ -4,7 +4,7 @@ import com.SSS.restApi.dao.CarDAO;
 import com.SSS.restApi.models.car.Car;
 import com.SSS.restApi.repositories.car.CarRepository;
 import com.SSS.restApi.responses.soap.CarResponse;
-import com.SSS.restApi.xmlWrapper.CarListResponse;
+import com.SSS.restApi.xmlWrapper.soap.SoapCarListResponse;
 import jakarta.jws.WebService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,15 +27,15 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public CarListResponse getVehiclesByBrand(String brand) {
+    public SoapCarListResponse getVehiclesByBrand(String brand) {
         List<Car> cars = carRepository.findAllByBrandIgnoreCase(brand);
         if (cars.isEmpty()) {
             log.warn("CarController getCarsByBrand, the cars the user was looking for were not found in database cars");
-            return new CarListResponse(new ArrayList<>());
+            return new SoapCarListResponse(new ArrayList<>());
         }
-        CarListResponse carListResponse = new CarListResponse(cars);
+        SoapCarListResponse soapCarListResponse = new SoapCarListResponse(cars);
         log.info("CarController getCarsByBrand, the cars the user was looking for were found");
-        return carListResponse;
+        return soapCarListResponse;
     }
 
     @Override

@@ -3,10 +3,9 @@ package com.SSS.restApi.controllers.rest;
 
 import com.SSS.restApi.dao.MotoDAO;
 import com.SSS.restApi.models.Vehicle;
-import com.SSS.restApi.models.car.Car;
 import com.SSS.restApi.models.moto.Moto;
 import com.SSS.restApi.repositories.moto.MotoRepository;
-import com.SSS.restApi.xmlWrapper.MotoListResponse;
+import com.SSS.restApi.xmlWrapper.rest.MotoListResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

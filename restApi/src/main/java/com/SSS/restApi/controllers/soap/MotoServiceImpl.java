@@ -4,7 +4,7 @@ import com.SSS.restApi.dao.MotoDAO;
 import com.SSS.restApi.models.moto.Moto;
 import com.SSS.restApi.repositories.moto.MotoRepository;
 import com.SSS.restApi.responses.soap.MotoResponse;
-import com.SSS.restApi.xmlWrapper.MotoListResponse;
+import com.SSS.restApi.xmlWrapper.soap.SoapMotoListResponse;
 import jakarta.jws.WebService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,15 +27,15 @@ public class MotoServiceImpl implements MotoService {
     }
 
     @Override
-    public MotoListResponse getVehiclesByBrand(String brand) {
+    public SoapMotoListResponse getVehiclesByBrand(String brand) {
         List<Moto> motos = motoRepository.findAllByBrandIgnoreCase(brand);
         if (motos.isEmpty()) {
             log.warn("MotoController getMotosByBrand, the motos the user was looking for were not found in database motos");
-            return new MotoListResponse(new ArrayList<>());
+            return new SoapMotoListResponse(new ArrayList<>());
         }
-        MotoListResponse motoListResponse = new MotoListResponse(motos);
+        SoapMotoListResponse soapMotoListResponse = new SoapMotoListResponse(motos);
         log.info("MotoController getMotosByBrand, the motos the user was looking for were found");
-        return motoListResponse;
+        return soapMotoListResponse;
     }
 
     @Override

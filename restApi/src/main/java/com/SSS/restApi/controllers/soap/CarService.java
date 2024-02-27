@@ -2,7 +2,7 @@ package com.SSS.restApi.controllers.soap;
 
 import com.SSS.restApi.models.car.Car;
 import com.SSS.restApi.responses.soap.CarResponse;
-import com.SSS.restApi.xmlWrapper.CarListResponse;
+import com.SSS.restApi.xmlWrapper.soap.SoapCarListResponse;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
@@ -36,7 +36,7 @@ public interface CarService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.getCarsByBrandResponse"
     )
-    CarListResponse getVehiclesByBrand(@WebParam(name = "brand") String brand);
+    SoapCarListResponse getVehiclesByBrand(@WebParam(name = "brand") String brand);
 
     @WebResult(name = "car", targetNamespace = "")
     @RequestWrapper(
