@@ -1,6 +1,5 @@
 package com.SSS.restApi.controllers.rest;
 
-import com.SSS.restApi.models.Vehicle;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +11,6 @@ public interface VehicleController {
 
     ResponseEntity<Object> getVehiclesByBrand(@RequestParam("brand") String brand);
 
-    ResponseEntity<String> addVehicle(@RequestBody String requestBody);
+    ResponseEntity<Object> addVehicle(@RequestBody String requestBody);
 
 }

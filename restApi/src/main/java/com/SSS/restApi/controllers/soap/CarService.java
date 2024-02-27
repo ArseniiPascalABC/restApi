@@ -7,6 +7,7 @@ import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
+import jakarta.xml.bind.JAXBException;
 import jakarta.xml.ws.RequestWrapper;
 import jakarta.xml.ws.ResponseWrapper;
 
@@ -23,7 +24,7 @@ public interface CarService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.getCarByIdResponse"
     )
-    Car getVehicleById(@WebParam(name = "id") Long id);
+    CarResponse getVehicleById(@WebParam(name = "id") Long id);
 
     @WebResult(name = "carsByBrand", targetNamespace = "")
     @RequestWrapper(
@@ -36,7 +37,7 @@ public interface CarService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.getCarsByBrandResponse"
     )
-    SoapCarListResponse getVehiclesByBrand(@WebParam(name = "brand") String brand);
+    CarResponse getVehiclesByBrand(@WebParam(name = "brand") String brand) throws JAXBException;
 
     @WebResult(name = "car", targetNamespace = "")
     @RequestWrapper(

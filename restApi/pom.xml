@@ -64,6 +64,12 @@
 			<artifactId>cxf-spring-boot-starter-jaxws</artifactId>
 			<version>4.0.3</version>
 		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20240205</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
