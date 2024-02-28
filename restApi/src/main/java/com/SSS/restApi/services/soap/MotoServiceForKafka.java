@@ -3,6 +3,7 @@ package com.SSS.restApi.services.soap;
 import com.SSS.restApi.dao.MotoDAO;
 import com.SSS.restApi.models.moto.Moto;
 import com.SSS.restApi.repositories.moto.MotoRepository;
+import com.SSS.restApi.responses.soap.CarResponse;
 import com.SSS.restApi.responses.soap.MotoResponse;
 import com.SSS.restApi.xmlWrapper.soap.SoapMotoListResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,9 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -22,9 +25,15 @@ public class MotoServiceForKafka {
 
     private final MotoDAO motoDAO;
     private final MotoRepository motoRepository;
+    private AtomicBoolean isMessageProcessed = new AtomicBoolean(false);
     @KafkaListener(topics = "soapTopic", groupId = "restSoap-group", containerFactory = "kafkaListenerContainerFactory")
-    public MotoResponse processMessageAndGetResponse(String message) {
+    public MotoResponse processMessageAndGetResponse(@Payload String message) {
         MotoResponse response = new MotoResponse();
+        if (isMessageProcessed.get()) {
+            isMessageProcessed.set(false);
+            return response;
+        }
+        isMessageProcessed.set(true);
         try {
             JSONObject jsonMessage = new JSONObject(message);
             String method = jsonMessage.getString("Method");
@@ -99,6 +108,7 @@ public class MotoServiceForKafka {
             response.setMessage("Ошибка в переданных значениях");
             response.setSuccess(false);
         }
+        isMessageProcessed.set(false);
         return response;
     }
 }

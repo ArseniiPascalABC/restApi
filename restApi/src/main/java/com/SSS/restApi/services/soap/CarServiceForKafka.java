@@ -11,21 +11,31 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @RequiredArgsConstructor
 @Slf4j
 @Component
+
 public class CarServiceForKafka {
 
     private final CarDAO carDAO;
     private final CarRepository carRepository;
+    private AtomicBoolean isMessageProcessed = new AtomicBoolean(false);
     @KafkaListener(topics = "soapTopic", groupId = "restSoap-group", containerFactory = "kafkaListenerContainerFactory")
-    public CarResponse processMessageAndGetResponse(String message) {
+    public CarResponse processMessageAndGetResponse(@Payload String message) {
         CarResponse response = new CarResponse();
+        if (isMessageProcessed.get()) {
+            isMessageProcessed.set(false);
+            return response;
+        }
+        isMessageProcessed.set(true);
         try {
+            System.out.println("Мы в try");
             JSONObject jsonMessage = new JSONObject(message);
             String method = jsonMessage.getString("Method");
             String vehicle = jsonMessage.getString("Vehicle");
@@ -60,13 +70,14 @@ public class CarServiceForKafka {
                             response.setData(carListResponse);
                             log.info("CarController getVehiclesByBrand, the vehicles the user was looking for were found");
                         }
-                        response.setSuccess(true);
                     } else {
                         response.setMessage("Некорректно переданный Vehicle");
                         response.setSuccess(false);
                     }
+                    return response;
                 }
                 case "addVehicle" -> {
+                    System.out.println("Мы в addVehicle");
                     if ("Car".equals(vehicle)) {
                         try {
                             ObjectMapper mapper = new ObjectMapper();
@@ -78,15 +89,17 @@ public class CarServiceForKafka {
                             log.info("CarSoapController addVehicle, Car was added");
                             response.setMessage("Запись добавлена");
                             response.setSuccess(true);
-
+                            return response;
                         } catch (Exception e) {
                             log.error("CarController addVehicle, Car was not added " + e);
                             response.setMessage("Запись не добавлена");
                             response.setSuccess(false);
+                            return response;
                         }
                     } else {
                         response.setMessage("Ошибка в переданном Vehicle");
                         response.setSuccess(false);
+                        return response;
                     }
                 }
                 default -> {
@@ -99,6 +112,7 @@ public class CarServiceForKafka {
             response.setMessage("Ошибка в переданных значениях");
             response.setSuccess(false);
         }
+        isMessageProcessed.set(false);
         return response;
     }
 }
