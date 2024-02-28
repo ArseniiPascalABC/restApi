@@ -1,16 +1,15 @@
 package com.SSS.restApi.controllers.soap;
 
-import com.SSS.restApi.dao.MotoDAO;
 import com.SSS.restApi.models.moto.Moto;
-import com.SSS.restApi.repositories.moto.MotoRepository;
 import com.SSS.restApi.responses.soap.MotoResponse;
-import com.SSS.restApi.xmlWrapper.soap.SoapMotoListResponse;
+import com.SSS.restApi.services.soap.MotoServiceForKafka;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jws.WebService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONObject;
+import org.springframework.kafka.core.KafkaTemplate;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,38 +18,43 @@ import java.util.List;
         endpointInterface = "com.SSS.restApi.controllers.soap.MotoService")
 public class MotoServiceImpl implements MotoService {
 
-    private final MotoRepository motoRepository;
-    private final MotoDAO motoDAO;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final MotoServiceForKafka motoServiceForKafka;
+
     @Override
-    public Moto getVehicleById(Long id) {
-        return motoRepository.findById(id).orElse(null);
+    public MotoResponse getVehicleById(Long id) {
+        JSONObject jsonMessage = new JSONObject();
+        jsonMessage.put("Vehicle", "Moto");
+        jsonMessage.put("Method", "getVehicleById");
+        jsonMessage.put("Body", id.toString());
+        System.out.println(jsonMessage);
+        kafkaTemplate.send("soapTopic", jsonMessage.toString());
+
+        return motoServiceForKafka.processMessageAndGetResponse(jsonMessage.toString());
     }
 
     @Override
-    public SoapMotoListResponse getVehiclesByBrand(String brand) {
-        List<Moto> motos = motoRepository.findAllByBrandIgnoreCase(brand);
-        if (motos.isEmpty()) {
-            log.warn("MotoController getMotosByBrand, the motos the user was looking for were not found in database motos");
-            return new SoapMotoListResponse(new ArrayList<>());
-        }
-        SoapMotoListResponse soapMotoListResponse = new SoapMotoListResponse(motos);
-        log.info("MotoController getMotosByBrand, the motos the user was looking for were found");
-        return soapMotoListResponse;
-    }
+    public MotoResponse getVehiclesByBrand(String brand) {
+        JSONObject jsonMessage = new JSONObject();
+        jsonMessage.put("Vehicle", "Moto");
+        jsonMessage.put("Method", "getVehiclesByBrand");
+        jsonMessage.put("Body", brand);
+        System.out.println(jsonMessage);
+        kafkaTemplate.send("soapTopic", jsonMessage.toString());
 
+        return motoServiceForKafka.processMessageAndGetResponse(jsonMessage.toString());
+    }
     @Override
-    public MotoResponse addVehicle(Moto moto) {
-        MotoResponse response = new MotoResponse();
-        try {
-            motoDAO.save(moto);
-            log.info("MotoController addMoto, moto was added");
-            response.setMessage("Запись добавлена");
-            response.setSuccess(true);
-        } catch (Exception e) {
-            log.info("MotoController addMoto, moto was not added");
-            response.setMessage("Запись не была добавлена");
-            response.setSuccess(false);
-        }
-        return response;
+    public MotoResponse addVehicle(Moto moto) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        String motoJson = mapper.writeValueAsString(moto);
+        JSONObject jsonMessage = new JSONObject();
+        jsonMessage.put("Vehicle", "Moto");
+        jsonMessage.put("Method", "addVehicle");
+        jsonMessage.put("Body", motoJson);
+        System.out.println(jsonMessage);
+        kafkaTemplate.send("soapTopic", jsonMessage.toString());
+
+        return motoServiceForKafka.processMessageAndGetResponse(jsonMessage.toString());
     }
 }

@@ -1,16 +1,14 @@
 package com.SSS.restApi.xmlWrapper.soap;
 
 import com.SSS.restApi.models.car.Car;
-import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Setter;
 
 import java.util.List;
 
-@Setter
 @XmlRootElement(name = "Cars")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class SoapCarListResponse {
-    @XmlElement(name = "Car")
     private List<Car> car;
 
     public SoapCarListResponse() {
@@ -25,4 +23,7 @@ public class SoapCarListResponse {
         return car;
     }
 
+    public void setCar(List<Car> car) {
+        this.car = car;
+    }
 }

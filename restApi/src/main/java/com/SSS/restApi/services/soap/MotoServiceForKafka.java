@@ -1,10 +1,10 @@
 package com.SSS.restApi.services.soap;
 
-import com.SSS.restApi.dao.CarDAO;
-import com.SSS.restApi.models.car.Car;
-import com.SSS.restApi.repositories.car.CarRepository;
-import com.SSS.restApi.responses.soap.CarResponse;
-import com.SSS.restApi.xmlWrapper.soap.SoapCarListResponse;
+import com.SSS.restApi.dao.MotoDAO;
+import com.SSS.restApi.models.moto.Moto;
+import com.SSS.restApi.repositories.moto.MotoRepository;
+import com.SSS.restApi.responses.soap.MotoResponse;
+import com.SSS.restApi.xmlWrapper.soap.SoapMotoListResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Component
-public class CarServiceForKafka {
+public class MotoServiceForKafka {
 
-    private final CarDAO carDAO;
-    private final CarRepository carRepository;
+    private final MotoDAO motoDAO;
+    private final MotoRepository motoRepository;
     @KafkaListener(topics = "soapTopic", groupId = "restSoap-group", containerFactory = "kafkaListenerContainerFactory")
-    public CarResponse processMessageAndGetResponse(String message) {
-        CarResponse response = new CarResponse();
+    public MotoResponse processMessageAndGetResponse(String message) {
+        MotoResponse response = new MotoResponse();
         try {
             JSONObject jsonMessage = new JSONObject(message);
             String method = jsonMessage.getString("Method");
@@ -32,15 +32,15 @@ public class CarServiceForKafka {
             String body = jsonMessage.getString("Body");
             switch (method){
                 case "getVehicleById" -> {
-                    if ("Car".equals(vehicle)){
-                        Car car = carRepository.findById(Long.parseLong(body)).orElse(null);
-                        if (car == null) {
-                            log.warn("CarSoapController getVehicleById, the vehicle the user was looking for(in dataBase cars) was not found");
+                    if ("Moto".equals(vehicle)){
+                        Moto moto = motoRepository.findById(Long.parseLong(body)).orElse(null);
+                        if (moto == null) {
+                            log.warn("MotoSoapController getVehicleById, the vehicle the user was looking for(in dataBase motos) was not found");
                             response.setMessage("Запись не найдена");
                         } else {
-                            log.info("CarSoapController getVehicleById, the vehicle the user was looking for was found in database cars");
+                            log.info("MotoSoapController getVehicleById, the vehicle the user was looking for was found in database motos");
                             response.setMessage("Запись найдена");
-                            response.setData(car);
+                            response.setData(moto);
                         }
                         response.setSuccess(true);
                     } else {
@@ -49,16 +49,16 @@ public class CarServiceForKafka {
                     }
                 }
                 case "getVehiclesByBrand" -> {
-                    if ("Car".equals(vehicle)) {
-                        List<Car> cars = carRepository.findAllByBrandIgnoreCase(body);
-                        if (cars.isEmpty()) {
-                            log.warn("CarController getVehiclesByBrand, the vehicles the user was looking for were not found in database cars");
-                            response.setMessage("Авто не найдены");
+                    if ("Moto".equals(vehicle)) {
+                        List<Moto> motos = motoRepository.findAllByBrandIgnoreCase(body);
+                        if (motos.isEmpty()) {
+                            log.warn("MotoController getVehiclesByBrand, the vehicles the user was looking for were not found in database motos");
+                            response.setMessage("Мотоциклы не найдены");
                         } else {
-                            SoapCarListResponse carListResponse = new SoapCarListResponse(cars);
-                            response.setMessage("Авто найдены");
-                            response.setData(carListResponse);
-                            log.info("CarController getVehiclesByBrand, the vehicles the user was looking for were found");
+                            SoapMotoListResponse soapMotoListResponse = new SoapMotoListResponse(motos);
+                            response.setMessage("Мотоциклы найдены");
+                            response.setData(soapMotoListResponse);
+                            log.info("MotoController getVehiclesByBrand, the vehicles the user was looking for were found");
                         }
                         response.setSuccess(true);
                     } else {
@@ -67,20 +67,20 @@ public class CarServiceForKafka {
                     }
                 }
                 case "addVehicle" -> {
-                    if ("Car".equals(vehicle)) {
+                    if ("Moto".equals(vehicle)) {
                         try {
                             ObjectMapper mapper = new ObjectMapper();
                             System.out.println("1");
-                            Car car = mapper.readValue(body, Car.class);
+                            Moto moto = mapper.readValue(body, Moto.class);
                             System.out.println("1");
-                            carDAO.save(car);
+                            motoDAO.save(moto);
                             System.out.println("1");
-                            log.info("CarSoapController addVehicle, Car was added");
+                            log.info("MotoSoapController addVehicle, Moto was added");
                             response.setMessage("Запись добавлена");
                             response.setSuccess(true);
 
                         } catch (Exception e) {
-                            log.error("CarController addVehicle, Car was not added " + e);
+                            log.error("MotoController addVehicle, Moto was not added " + e);
                             response.setMessage("Запись не добавлена");
                             response.setSuccess(false);
                         }

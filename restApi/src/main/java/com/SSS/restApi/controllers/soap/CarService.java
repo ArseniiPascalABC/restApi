@@ -2,7 +2,7 @@ package com.SSS.restApi.controllers.soap;
 
 import com.SSS.restApi.models.car.Car;
 import com.SSS.restApi.responses.soap.CarResponse;
-import com.SSS.restApi.xmlWrapper.soap.SoapCarListResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
@@ -50,5 +50,5 @@ public interface CarService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.addCarResponse"
     )
-    CarResponse addVehicle(@WebParam(name = "car") Car car);
+    CarResponse addVehicle(@WebParam(name = "car") Car car) throws JsonProcessingException;
 }

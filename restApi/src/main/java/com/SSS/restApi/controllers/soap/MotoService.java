@@ -2,11 +2,12 @@ package com.SSS.restApi.controllers.soap;
 
 import com.SSS.restApi.models.moto.Moto;
 import com.SSS.restApi.responses.soap.MotoResponse;
-import com.SSS.restApi.xmlWrapper.soap.SoapMotoListResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
+import jakarta.xml.bind.JAXBException;
 import jakarta.xml.ws.RequestWrapper;
 import jakarta.xml.ws.ResponseWrapper;
 
@@ -23,7 +24,7 @@ public interface MotoService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.getMotoByIdResponse"
     )
-    Moto getVehicleById(@WebParam(name = "id") Long id);
+    MotoResponse getVehicleById(@WebParam(name = "id") Long id);
 
     @WebResult(name = "motosByBrand", targetNamespace = "")
     @RequestWrapper(
@@ -36,7 +37,7 @@ public interface MotoService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.getMotosByBrandResponse"
     )
-    SoapMotoListResponse getVehiclesByBrand(@WebParam(name = "brand") String brand);
+    MotoResponse getVehiclesByBrand(@WebParam(name = "brand") String brand) throws JAXBException;
 
     @WebResult(name = "moto", targetNamespace = "")
     @RequestWrapper(
@@ -49,5 +50,5 @@ public interface MotoService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.addMotoResponse"
     )
-    MotoResponse addVehicle(@WebParam(name = "moto") Moto moto);
+    MotoResponse addVehicle(@WebParam(name = "moto") Moto moto) throws JsonProcessingException;
 }

@@ -25,7 +25,6 @@ public class CarVehicleController implements VehicleController {
         jsonMessage.put("Vehicle", "Car");
         jsonMessage.put("Method", "getVehicleById");
         jsonMessage.put("Body", id.toString());
-        System.out.println(jsonMessage);
         kafkaTemplate.send("restTopic", jsonMessage.toString());
 
         return carVehicleService.processMessageAndGetResponse(jsonMessage.toString());
@@ -38,7 +37,6 @@ public class CarVehicleController implements VehicleController {
         jsonMessage.put("Vehicle", "Car");
         jsonMessage.put("Method", "getVehiclesByBrand");
         jsonMessage.put("Body", brand);
-        System.out.println(jsonMessage);
         kafkaTemplate.send("restTopic", jsonMessage.toString());
 
         return carVehicleService.processMessageAndGetResponse(jsonMessage.toString());
@@ -52,7 +50,6 @@ public class CarVehicleController implements VehicleController {
         jsonMessage.put("Vehicle", "Car");
         jsonMessage.put("Method", "addVehicle");
         jsonMessage.put("Body", requestBody);
-        System.out.println(jsonMessage);
         kafkaTemplate.send("restTopic", jsonMessage.toString());
 
         return carVehicleService.processMessageAndGetResponse(jsonMessage.toString());
