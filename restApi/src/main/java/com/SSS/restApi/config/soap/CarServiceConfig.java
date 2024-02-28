@@ -20,20 +20,21 @@ public class CarServiceConfig {
 
     private final Bus bus;
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplateForCar;
+    private final KafkaTemplate<String, String> kafkaTemplateForMoto;
     private final CarServiceForKafka carServiceForKafka;
     private final MotoServiceForKafka motoServiceForKafka;
 
     @Bean
     public Endpoint carEndpoint() {
-        EndpointImpl endpoint = new EndpointImpl(bus, new CarServiceImpl(kafkaTemplate, carServiceForKafka));
+        EndpointImpl endpoint = new EndpointImpl(bus, new CarServiceImpl(kafkaTemplateForCar, carServiceForKafka));
         endpoint.publish("/CarService");
         return endpoint;
     }
 
     @Bean
     public Endpoint motoEndpoint(){
-        EndpointImpl endpoint = new EndpointImpl(bus, new MotoServiceImpl(kafkaTemplate, motoServiceForKafka));
+        EndpointImpl endpoint = new EndpointImpl(bus, new MotoServiceImpl(kafkaTemplateForMoto, motoServiceForKafka));
         endpoint.publish("/MotoService");
         return endpoint;
     }

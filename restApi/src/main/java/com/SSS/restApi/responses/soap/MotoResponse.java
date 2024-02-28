@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-//@XmlSeeAlso(SoapMotoListResponse.class)
+@XmlSeeAlso(SoapMotoListResponse.class)
 public class MotoResponse {
     private Object data;
     private String message;
