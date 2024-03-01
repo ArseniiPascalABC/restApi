@@ -2,17 +2,16 @@ package com.SSS.restApi.xmlWrapper.soap;
 
 import com.SSS.restApi.models.car.Car;
 import jakarta.xml.bind.annotation.*;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Setter
 @XmlRootElement(name = "Cars")
+@NoArgsConstructor
 public class SoapCarListResponse {
     private List<Car> car;
-
-    public SoapCarListResponse() {
-    }
 
     public SoapCarListResponse(List<Car> car) {
         this.car = car;

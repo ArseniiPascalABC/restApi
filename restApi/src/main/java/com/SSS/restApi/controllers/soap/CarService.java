@@ -13,7 +13,7 @@ import jakarta.xml.ws.ResponseWrapper;
 
 @WebService(targetNamespace = "http://service.ws.sample/", name = "CarService")
 public interface CarService {
-    @WebResult(name = "carById", targetNamespace = "")
+    @WebResult(name = "carById")
     @RequestWrapper(
             localName = "getCarById",
             targetNamespace = "http://service.ws.sample/",
@@ -26,7 +26,7 @@ public interface CarService {
     )
     CarResponse getVehicleById(@WebParam(name = "id") Long id);
 
-    @WebResult(name = "carsByBrand", targetNamespace = "")
+    @WebResult(name = "carsByBrand")
     @RequestWrapper(
             localName = "getCarsByBrand",
             targetNamespace = "http://service.ws.sample/",
@@ -39,7 +39,7 @@ public interface CarService {
     )
     CarResponse getVehiclesByBrand(@WebParam(name = "brand") String brand) throws JAXBException;
 
-    @WebResult(name = "car", targetNamespace = "")
+    @WebResult(name = "car")
     @RequestWrapper(
             localName = "addCar",
             targetNamespace = "http://service.ws.sample/",

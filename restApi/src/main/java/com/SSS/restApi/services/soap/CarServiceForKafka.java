@@ -25,7 +25,7 @@ public class CarServiceForKafka {
 
     private final CarDAO carDAO;
     private final CarRepository carRepository;
-    private AtomicBoolean isMessageProcessed = new AtomicBoolean(false);
+    private final AtomicBoolean isMessageProcessed = new AtomicBoolean(false);
     @KafkaListener(topics = "soapTopic", groupId = "restSoap-group", containerFactory = "kafkaListenerContainerFactory")
     public CarResponse processMessageAndGetResponse(@Payload String message) {
         CarResponse response = new CarResponse();
@@ -70,6 +70,7 @@ public class CarServiceForKafka {
                             response.setData(carListResponse);
                             log.info("CarController getVehiclesByBrand, the vehicles the user was looking for were found");
                         }
+                        response.setSuccess(true);
                     } else {
                         response.setMessage("Некорректно переданный Vehicle");
                         response.setSuccess(false);

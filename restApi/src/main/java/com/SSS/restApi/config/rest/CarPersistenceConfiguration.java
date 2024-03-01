@@ -26,9 +26,11 @@ import java.util.HashMap;
 )
 public class CarPersistenceConfiguration {
 
+    private final Environment env;
     @Autowired
-    private Environment env;
-
+    public CarPersistenceConfiguration(Environment env){
+        this.env = env;
+    }
     @Primary
     @Bean
     @ConfigurationProperties(prefix="spring.datasource")
@@ -41,8 +43,7 @@ public class CarPersistenceConfiguration {
     public LocalContainerEntityManagerFactoryBean carEntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(carDataSource());
-        em.setPackagesToScan(
-                new String[]{"com.SSS.restApi.models.car"});
+        em.setPackagesToScan("com.SSS.restApi.models.car");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

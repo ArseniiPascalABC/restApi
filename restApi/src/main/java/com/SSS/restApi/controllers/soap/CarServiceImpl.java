@@ -29,7 +29,6 @@ public class CarServiceImpl implements CarService{
         jsonMessage.put("Body", id.toString());
         System.out.println(jsonMessage);
         kafkaTemplate.send("soapTopic", jsonMessage.toString());
-        System.out.println("Отправили в каркафку");
         return carServiceForKafka.processMessageAndGetResponse(jsonMessage.toString());
     }
 
@@ -41,7 +40,6 @@ public class CarServiceImpl implements CarService{
         jsonMessage.put("Body", brand);
         System.out.println(jsonMessage);
         kafkaTemplate.send("soapTopic", jsonMessage.toString());
-        System.out.println("Отправили в каркафку");
         return carServiceForKafka.processMessageAndGetResponse(jsonMessage.toString());
     }
     @Override
@@ -54,7 +52,8 @@ public class CarServiceImpl implements CarService{
         jsonMessage.put("Body", carJson);
         System.out.println(jsonMessage);
         kafkaTemplate.send("soapTopic", jsonMessage.toString());
-        System.out.println("Отправили в каркафку");
         return carServiceForKafka.processMessageAndGetResponse(jsonMessage.toString());
     }
+    //Отправка - ожидание ответа
+    //rest запрос к soap сервису
 }

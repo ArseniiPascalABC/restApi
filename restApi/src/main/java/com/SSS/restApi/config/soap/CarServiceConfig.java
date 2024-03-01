@@ -2,8 +2,6 @@ package com.SSS.restApi.config.soap;
 
 import com.SSS.restApi.controllers.soap.CarServiceImpl;
 import com.SSS.restApi.controllers.soap.MotoServiceImpl;
-import com.SSS.restApi.dao.MotoDAO;
-import com.SSS.restApi.repositories.moto.MotoRepository;
 import com.SSS.restApi.services.soap.CarServiceForKafka;
 import com.SSS.restApi.services.soap.MotoServiceForKafka;
 import jakarta.xml.ws.Endpoint;

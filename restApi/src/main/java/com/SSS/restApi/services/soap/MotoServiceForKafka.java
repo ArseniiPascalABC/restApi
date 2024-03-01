@@ -3,7 +3,6 @@ package com.SSS.restApi.services.soap;
 import com.SSS.restApi.dao.MotoDAO;
 import com.SSS.restApi.models.moto.Moto;
 import com.SSS.restApi.repositories.moto.MotoRepository;
-import com.SSS.restApi.responses.soap.CarResponse;
 import com.SSS.restApi.responses.soap.MotoResponse;
 import com.SSS.restApi.xmlWrapper.soap.SoapMotoListResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +24,7 @@ public class MotoServiceForKafka {
 
     private final MotoDAO motoDAO;
     private final MotoRepository motoRepository;
-    private AtomicBoolean isMessageProcessed = new AtomicBoolean(false);
+    private final AtomicBoolean isMessageProcessed = new AtomicBoolean(false);
     @KafkaListener(topics = "soapTopic", groupId = "restSoap-group", containerFactory = "kafkaListenerContainerFactory")
     public MotoResponse processMessageAndGetResponse(@Payload String message) {
         MotoResponse response = new MotoResponse();

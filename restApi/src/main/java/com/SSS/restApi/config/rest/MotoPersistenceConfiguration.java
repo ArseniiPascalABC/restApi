@@ -25,8 +25,12 @@ import java.util.HashMap;
 )
 public class MotoPersistenceConfiguration {
 
+    private final Environment env;
+
     @Autowired
-    private Environment env;
+    public MotoPersistenceConfiguration(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     @ConfigurationProperties(prefix="spring.second-datasource")
