@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/rest/cars")
 public class CarVehicleController implements VehicleController {
-    
+
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final CarVehicleService carVehicleService;
 

@@ -16,9 +16,18 @@ public class KafkaTopicConfig {
                 .build();
     }
     @Bean
-    public NewTopic soapTopic(){
+    public NewTopic soapCarTopic(){
         return TopicBuilder
-                .name("soapTopic")
+                .name("soapCarTopic")
+                .replicas(1)
+                .partitions(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic soapMotoTopic(){
+        return TopicBuilder
+                .name("soapMotoTopic")
                 .replicas(1)
                 .partitions(1)
                 .build();

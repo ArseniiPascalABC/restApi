@@ -11,6 +11,9 @@ import jakarta.xml.bind.JAXBException;
 import jakarta.xml.ws.RequestWrapper;
 import jakarta.xml.ws.ResponseWrapper;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
 @WebService(targetNamespace = "http://service.ws.sample/", name = "MotoService")
 public interface MotoService {
     @WebResult(name = "motoById")
@@ -24,7 +27,7 @@ public interface MotoService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.getMotoByIdResponse"
     )
-    MotoResponse getVehicleById(@WebParam(name = "id") Long id);
+    MotoResponse getVehicleById(@WebParam(name = "id") Long id) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException;
 
     @WebResult(name = "motosByBrand")
     @RequestWrapper(
@@ -37,7 +40,7 @@ public interface MotoService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.getMotosByBrandResponse"
     )
-    MotoResponse getVehiclesByBrand(@WebParam(name = "brand") String brand) throws JAXBException;
+    MotoResponse getVehiclesByBrand(@WebParam(name = "brand") String brand) throws JAXBException, JsonProcessingException;
 
     @WebResult(name = "moto")
     @RequestWrapper(
