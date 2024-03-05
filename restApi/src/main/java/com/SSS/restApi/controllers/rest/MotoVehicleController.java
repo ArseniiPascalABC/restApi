@@ -25,7 +25,6 @@ public class MotoVehicleController implements VehicleController{
         jsonMessage.put("Vehicle", "Moto");
         jsonMessage.put("Method", "getVehicleById");
         jsonMessage.put("Body", id.toString());
-        System.out.println(jsonMessage);
         kafkaTemplate.send("restTopic", jsonMessage.toString());
 
         return motoVehicleService.processMessageAndGetResponse(jsonMessage.toString());
@@ -38,11 +37,9 @@ public class MotoVehicleController implements VehicleController{
         jsonMessage.put("Vehicle", "Moto");
         jsonMessage.put("Method", "getVehiclesByBrand");
         jsonMessage.put("Body", brand);
-        System.out.println(jsonMessage);
         kafkaTemplate.send("restTopic", jsonMessage.toString());
 
         return motoVehicleService.processMessageAndGetResponse(jsonMessage.toString());
-
     }
 
     @Override
@@ -52,11 +49,9 @@ public class MotoVehicleController implements VehicleController{
         jsonMessage.put("Vehicle", "Moto");
         jsonMessage.put("Method", "addVehicle");
         jsonMessage.put("Body", requestBody);
-        System.out.println(jsonMessage);
         kafkaTemplate.send("restTopic", jsonMessage.toString());
 
         return motoVehicleService.processMessageAndGetResponse(jsonMessage.toString());
-
     }
 
 }

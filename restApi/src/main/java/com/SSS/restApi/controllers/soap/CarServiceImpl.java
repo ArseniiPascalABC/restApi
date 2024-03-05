@@ -10,12 +10,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import static com.SSS.restApi.controllers.soap.MotoServiceImpl.getJsonObject;
 
+@Component
 @Slf4j
 @RequiredArgsConstructor
 @WebService(serviceName = "CarService", endpointInterface = "com.SSS.restApi.controllers.soap.CarService")
