@@ -11,10 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.requestreply.RequestReplyFuture;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -23,10 +26,14 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 @RequiredArgsConstructor
 @WebService(serviceName = "MotoService", endpointInterface = "com.SSS.restApi.controllers.soap.MotoService")
+@Component
+@ComponentScan("application.properties")
 public class MotoServiceImpl implements MotoService{
 
     private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
 
+    @Value("${kafka.soap.topic.name}")
+    public String soapTopicName;
     @Override
     public MotoResponse getVehicleById(Long id) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
         JSONObject jsonMessage = new JSONObject();
@@ -79,7 +86,6 @@ public class MotoServiceImpl implements MotoService{
         jsonMessage.put("Vehicle", "Moto");
         jsonMessage.put("Method", "addVehicle");
         jsonMessage.put("Body", motoJson);
-        System.out.println(jsonMessage);
         JSONObject replyJson = sendAndReceiveMessage(jsonMessage);
         if (replyJson == null) {
             return new MotoResponse(null, "Error sending or receiving message from Kafka", false);
@@ -90,7 +96,8 @@ public class MotoServiceImpl implements MotoService{
     }
 
     private JSONObject sendAndReceiveMessage(JSONObject jsonMessage) {
-        return getJsonObject(jsonMessage, replyingKafkaTemplate, "soapMotoTopic");
+        System.out.println("ААА" + soapTopicName);
+        return getJsonObject(jsonMessage, replyingKafkaTemplate, "soapTopic");
     }
 
     @Nullable
@@ -109,5 +116,4 @@ public class MotoServiceImpl implements MotoService{
             return null;
         }
     }
-    //rest запрос к soap сервису
 }

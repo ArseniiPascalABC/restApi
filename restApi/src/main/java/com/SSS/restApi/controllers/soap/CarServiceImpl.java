@@ -9,6 +9,7 @@ import jakarta.jws.WebService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ import static com.SSS.restApi.controllers.soap.MotoServiceImpl.getJsonObject;
 @Slf4j
 @RequiredArgsConstructor
 @WebService(serviceName = "CarService", endpointInterface = "com.SSS.restApi.controllers.soap.CarService")
+@ComponentScan("application.properties")
 public class CarServiceImpl implements CarService{
 
     private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
@@ -85,7 +87,6 @@ public class CarServiceImpl implements CarService{
     }
 
     private JSONObject sendAndReceiveMessage(JSONObject jsonMessage) {
-        return getJsonObject(jsonMessage, replyingKafkaTemplate, "soapCarTopic");
+        return getJsonObject(jsonMessage, replyingKafkaTemplate, "soapTopic");
     }
-    //rest запрос к soap сервису
 }
