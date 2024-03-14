@@ -1,7 +1,7 @@
-package com.SSS.restApi.controllers.soap;
+package com.sss.restapi.controllers.soap;
 
-import com.SSS.restApi.models.moto.Moto;
-import com.SSS.restApi.responses.soap.MotoResponse;
+import com.sss.restapi.models.moto.Moto;
+import com.sss.restapi.responses.soap.MotoResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;

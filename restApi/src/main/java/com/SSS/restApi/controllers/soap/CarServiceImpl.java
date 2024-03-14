@@ -1,8 +1,8 @@
-package com.SSS.restApi.controllers.soap;
+package com.sss.restapi.controllers.soap;
 
-import com.SSS.restApi.models.car.Car;
-import com.SSS.restApi.responses.soap.CarResponse;
-import com.SSS.restApi.xmlWrapper.soap.SoapCarListResponse;
+import com.sss.restapi.models.car.Car;
+import com.sss.restapi.responses.soap.CarResponse;
+import com.sss.restapi.xmlwrapper.soap.SoapCarListResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jws.WebService;
@@ -16,28 +16,36 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-import static com.SSS.restApi.controllers.soap.MotoServiceImpl.getJsonObject;
+import static com.sss.restapi.controllers.soap.MotoServiceImpl.getJsonObject;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@WebService(serviceName = "CarService", endpointInterface = "com.SSS.restApi.controllers.soap.CarService")
+@WebService(serviceName = "CarService", endpointInterface = "com.sss.restapi.controllers.soap.CarService")
 @ComponentScan("application.properties")
 public class CarServiceImpl implements CarService{
 
+    private static final String VEHICLE = "Vehicle";
+    private static final String METHOD = "Method";
+    private static final String BODY = "Body";
+    private static final String SUCCESS = "Success";
+    private static final String MESSAGE = "Message";
+    private static final String ERROR_MESSAGE = "Error sending or receiving message from Kafka";
+
     private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
+
     @Override
     public CarResponse getVehicleById(Long id) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("Vehicle", "Car");
-        jsonMessage.put("Method", "getVehicleById");
-        jsonMessage.put("Body", id.toString());
+        jsonMessage.put(VEHICLE, "Car");
+        jsonMessage.put(METHOD, "getVehicleById");
+        jsonMessage.put(BODY, id.toString());
         JSONObject replyJson = sendAndReceiveMessage(jsonMessage);
         if (replyJson == null) {
-            return new CarResponse(null, "Error sending or receiving message from Kafka", false);
+            return new CarResponse(null, ERROR_MESSAGE, false);
         }
-        boolean success = replyJson.getBoolean("Success");
-        String message = replyJson.getString("Message");
+        boolean success = replyJson.getBoolean(SUCCESS);
+        String message = replyJson.getString(MESSAGE);
         Car car;
         if (replyJson.has("Car")) {
             ObjectMapper mapper = new ObjectMapper();
@@ -51,15 +59,15 @@ public class CarServiceImpl implements CarService{
     @Override
     public CarResponse getVehiclesByBrand(String brand) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("Vehicle", "Car");
-        jsonMessage.put("Method", "getVehiclesByBrand");
-        jsonMessage.put("Body", brand);
+        jsonMessage.put(VEHICLE, "Car");
+        jsonMessage.put(METHOD, "getVehiclesByBrand");
+        jsonMessage.put(BODY, brand);
         JSONObject replyJson = sendAndReceiveMessage(jsonMessage);
         if (replyJson == null) {
-            return new CarResponse(null, "Error sending or receiving message from Kafka", false);
+            return new CarResponse(null, ERROR_MESSAGE, false);
         }
-        boolean success = replyJson.getBoolean("Success");
-        String message = replyJson.getString("Message");
+        boolean success = replyJson.getBoolean(SUCCESS);
+        String message = replyJson.getString(MESSAGE);
         SoapCarListResponse soapCarListResponse;
         if (replyJson.has("Data")) {
             ObjectMapper mapper = new ObjectMapper();
@@ -74,15 +82,15 @@ public class CarServiceImpl implements CarService{
         ObjectMapper mapper = new ObjectMapper();
         String carJson = mapper.writeValueAsString(car);
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("Vehicle", "Car");
-        jsonMessage.put("Method", "addVehicle");
-        jsonMessage.put("Body", carJson);
+        jsonMessage.put(VEHICLE, "Car");
+        jsonMessage.put(METHOD, "addVehicle");
+        jsonMessage.put(BODY, carJson);
         JSONObject replyJson = sendAndReceiveMessage(jsonMessage);
         if (replyJson == null) {
-            return new CarResponse(null, "Error sending or receiving message from Kafka", false);
+            return new CarResponse(null, ERROR_MESSAGE, false);
         }
-        boolean success = replyJson.getBoolean("Success");
-        String message = replyJson.getString("Message");
+        boolean success = replyJson.getBoolean(SUCCESS);
+        String message = replyJson.getString(MESSAGE);
         return new CarResponse(null, message, success);
     }
 

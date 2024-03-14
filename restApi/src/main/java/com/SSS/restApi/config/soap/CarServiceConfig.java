@@ -1,7 +1,7 @@
-package com.SSS.restApi.config.soap;
+package com.sss.restapi.config.soap;
 
-import com.SSS.restApi.controllers.soap.CarServiceImpl;
-import com.SSS.restApi.controllers.soap.MotoServiceImpl;
+import com.sss.restapi.controllers.soap.CarServiceImpl;
+import com.sss.restapi.controllers.soap.MotoServiceImpl;
 import jakarta.xml.ws.Endpoint;
 import lombok.RequiredArgsConstructor;
 import org.apache.cxf.Bus;

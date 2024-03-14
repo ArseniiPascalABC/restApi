@@ -1,10 +1,10 @@
-package com.SSS.restApi.controllers;
+package com.sss.restapi.controllers;
 
-import com.SSS.restApi.models.moto.Moto;
-import com.SSS.restApi.repositories.moto.MotoRepository;
+import com.sss.restapi.models.moto.Moto;
+import com.sss.restapi.repositories.moto.MotoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.SSS.restApi.models.car.Car;
-import com.SSS.restApi.repositories.car.CarRepository;
+import com.sss.restapi.models.car.Car;
+import com.sss.restapi.repositories.car.CarRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class VehicleCommonControllerTest {
+class VehicleCommonControllerTest {
 
     @Autowired
     private CarRepository carRepository;
@@ -50,7 +50,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET / возвращает HTTP-ответ со статусом 200 OK и нужным авто")
-    public void testGetCarById() throws Exception {
+    void testGetCarById() throws Exception {
 
         String expectedXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<Car><id>1</id><brand>Toyota</brand><model>Camry</model></Car>";
@@ -65,7 +65,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET / возвращает HTTP-ответ со статусом 200 OK и нужным мото")
-    public void testGetMotoById() throws Exception {
+    void testGetMotoById() throws Exception {
 
         String expectedXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<Moto><id>1</id><brand>Toyota</brand><model>Camry</model></Moto>";
@@ -80,7 +80,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET / возвращает HTTP-ответ со статусом 200 OK и нужным авто")
-    public void testGetUnknownVehicleById() throws Exception {
+    void testGetUnknownVehicleById() throws Exception {
 
         String expectedXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<Car><id>1</id><brand>Toyota</brand><model>Camry</model></Car>";
@@ -95,7 +95,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET / возвращает HTTP-ответ со статусом 200 OK и нужным авто")
-    public void testGetEmptyDataBaseParameterVehicleById() throws Exception {
+    void testGetEmptyDataBaseParameterVehicleById() throws Exception {
 
         String expectedXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<Car><id>1</id><brand>Toyota</brand><model>Camry</model></Car>";
@@ -109,7 +109,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET / возвращает HTTP-ответ со статусом 200 ОК при отсутствии машины")
-    public void testGetNonExistentCarById() throws Exception {
+    void testGetNonExistentCarById() throws Exception {
         String expectedMessage = "<message>Ничего не найдено по id = 999 в базе данных auto</message>";
 
         mockMvc.perform(MockMvcRequestBuilders.get("/")
@@ -122,7 +122,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET / возвращает HTTP-ответ со статусом 200 ОК при отсутствии машины")
-    public void testGetNonExistentMotoById() throws Exception {
+    void testGetNonExistentMotoById() throws Exception {
         String expectedMessage = "<message>Ничего не найдено по id = 999 в базе данных moto</message>";
 
         mockMvc.perform(MockMvcRequestBuilders.get("/")
@@ -135,7 +135,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET / возвращает HTTP-ответ со статусом 200 ОК при отсутствии машины")
-    public void testGetNonExistentVehicleById() throws Exception {
+    void testGetNonExistentVehicleById() throws Exception {
         String expectedMessage = "<message>Ничего не найдено по id = 999 в базе данных auto</message>";
 
         mockMvc.perform(MockMvcRequestBuilders.get("/")
@@ -148,7 +148,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET / возвращает HTTP-ответ со статусом 200 ОК при отсутствии машины")
-    public void testGetEmptyDataBaseParameterNonExistentCarById() throws Exception {
+    void testGetEmptyDataBaseParameterNonExistentCarById() throws Exception {
         String expectedMessage = "<message>Ничего не найдено по id = 999 в базе данных auto</message>";
 
         mockMvc.perform(MockMvcRequestBuilders.get("/")
@@ -160,7 +160,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET /brand возвращает HTTP-ответ со статусом 200 OK и нужными автомобилями")
-    public void testGetCarsByBrand() throws Exception {
+    void testGetCarsByBrand() throws Exception {
 
         String expectedXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<Cars><Car><id>1</id><brand>Toyota</brand><model>Camry</model></Car>" +
@@ -176,7 +176,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET /brand возвращает HTTP-ответ со статусом 200 OK и нужными автомобилями")
-    public void testGetMotosByBrand() throws Exception {
+    void testGetMotosByBrand() throws Exception {
 
         String expectedXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<Motos><Moto><id>1</id><brand>Toyota</brand><model>Camry</model></Moto>" +
@@ -192,7 +192,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET /brand возвращает HTTP-ответ со статусом 200 OK и нужными автомобилями")
-    public void testGetUnknownVehiclesByBrand() throws Exception {
+    void testGetUnknownVehiclesByBrand() throws Exception {
 
         String expectedXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<Cars><Car><id>1</id><brand>Toyota</brand><model>Camry</model></Car>" +
@@ -208,7 +208,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET /brand возвращает HTTP-ответ со статусом 200 OK и нужными автомобилями")
-    public void testGetNonExistentVehiclesByBrand() throws Exception {
+    void testGetNonExistentVehiclesByBrand() throws Exception {
 
         String expectedXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<Cars><Car><id>1</id><brand>Toyota</brand><model>Camry</model></Car>" +
@@ -223,7 +223,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET /brand возвращает HTTP-ответ со статусом 200 OK при отсутствии машин нужного бренда")
-    public void testGetNonExistentCarsByBrand() throws Exception {
+    void testGetNonExistentCarsByBrand() throws Exception {
 
         String expectedXml = "<message>Ничего не найдено по бренду qqq в базе данных auto</message>";
 
@@ -237,7 +237,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET /brand возвращает HTTP-ответ со статусом 200 OK при отсутствии машин нужного бренда")
-    public void testGetNonExistentMotosByBrand() throws Exception {
+    void testGetNonExistentMotosByBrand() throws Exception {
 
         String expectedXml = "<message>Ничего не найдено по бренду qqq в базе данных moto</message>";
 
@@ -251,7 +251,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET /brand возвращает HTTP-ответ со статусом 200 OK при отсутствии машин нужного бренда")
-    public void testGetNonExistentUnknownVehiclesByBrand() throws Exception {
+    void testGetNonExistentUnknownVehiclesByBrand() throws Exception {
 
         String expectedXml = "<message>Ничего не найдено по бренду qqq в базе данных auto</message>";
 
@@ -265,7 +265,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("GET /brand возвращает HTTP-ответ со статусом 200 OK при отсутствии машин нужного бренда")
-    public void testGetEmptyDataBaseParameterNonExistentVehiclesByBrand() throws Exception {
+    void testGetEmptyDataBaseParameterNonExistentVehiclesByBrand() throws Exception {
 
         String expectedMessage = "<message>Ничего не найдено по бренду qqq в базе данных auto</message>";
 
@@ -278,7 +278,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("POST / добавляет автомобиль и возвращает сообщение о добавлении")
-    public void testAddVehicleCar() throws Exception {
+    void testAddVehicleCar() throws Exception {
         Car car = new Car(4L, "Toyota", "Camry");
         String carJson = objectMapper.writeValueAsString(car);
 
@@ -294,7 +294,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("POST / добавляет автомобиль и возвращает сообщение о добавлении")
-    public void testAddVehicleMoto() throws Exception {
+    void testAddVehicleMoto() throws Exception {
         Car car = new Car(4L, "Toyota", "Camry");
         String carJson = objectMapper.writeValueAsString(car);
 
@@ -310,7 +310,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("POST / добавляет автомобиль и возвращает сообщение о добавлении")
-    public void testAddUnknownVehicle() throws Exception {
+    void testAddUnknownVehicle() throws Exception {
         Car car = new Car(4L, "Toyota", "Camry");
         String carJson = objectMapper.writeValueAsString(car);
 
@@ -326,7 +326,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("POST / добавляет автомобиль и возвращает сообщение о добавлении")
-    public void testAddEmptyDataBaseParameterVehicle() throws Exception {
+    void testAddEmptyDataBaseParameterVehicle() throws Exception {
         Car car = new Car(4L, "Toyota", "Camry");
         String carJson = objectMapper.writeValueAsString(car);
 
@@ -342,7 +342,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("POST / не добавляет автомобиль и возвращает сообщение об ошибке")
-    public void testBadRequestAddVehicleCar() throws Exception {
+    void testBadRequestAddVehicleCar() throws Exception {
         Car car = new Car(4L, "ToyotaToyotaToyotaToyota", "Camry");
 
         String carJson = objectMapper.writeValueAsString(car);
@@ -359,7 +359,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("POST / не добавляет автомобиль и возвращает сообщение об ошибке")
-    public void testBadRequestAddVehicleMoto() throws Exception {
+    void testBadRequestAddVehicleMoto() throws Exception {
         Car car = new Car(4L, "ToyotaToyotaToyotaToyota", "Camry");
 
         String carJson = objectMapper.writeValueAsString(car);
@@ -376,7 +376,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("POST / не добавляет автомобиль и возвращает сообщение об ошибке")
-    public void testBadRequestAddUnknownVehicle() throws Exception {
+    void testBadRequestAddUnknownVehicle() throws Exception {
         Car car = new Car(4L, "ToyotaToyotaToyotaToyota", "Camry");
 
         String carJson = objectMapper.writeValueAsString(car);
@@ -393,7 +393,7 @@ public class VehicleCommonControllerTest {
 
     @Test
     @DisplayName("POST / не добавляет автомобиль и возвращает сообщение об ошибке")
-    public void testBadRequestAddEmptyDataBaseParameter() throws Exception {
+    void testBadRequestAddEmptyDataBaseParameter() throws Exception {
         Car car = new Car(4L, "ToyotaToyotaToyotaToyota", "Camry");
 
         String carJson = objectMapper.writeValueAsString(car);

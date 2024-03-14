@@ -1,6 +1,6 @@
-package com.SSS.restApi.repositories.car;
+package com.sss.restapi.repositories.car;
 
-import com.SSS.restApi.models.car.Car;
+import com.sss.restapi.models.car.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;

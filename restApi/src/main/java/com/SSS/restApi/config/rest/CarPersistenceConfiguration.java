@@ -1,4 +1,4 @@
-package com.SSS.restApi.config.rest;
+package com.sss.restapi.config.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,7 +20,7 @@ import java.util.HashMap;
 @Configuration
 @PropertySource({"classpath:application.properties"})
 @EnableJpaRepositories(
-        basePackages = "com.SSS.restApi.repositories.car",
+        basePackages = "com.sss.restapi.repositories.car",
         entityManagerFactoryRef = "carEntityManager",
         transactionManagerRef = "carTransactionManager"
 )
@@ -43,7 +43,7 @@ public class CarPersistenceConfiguration {
     public LocalContainerEntityManagerFactoryBean carEntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(carDataSource());
-        em.setPackagesToScan("com.SSS.restApi.models.car");
+        em.setPackagesToScan("com.sss.restapi.models.car");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

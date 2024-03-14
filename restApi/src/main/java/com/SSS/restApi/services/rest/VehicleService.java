@@ -1,4 +1,4 @@
-package com.SSS.restApi.services.rest;
+package com.sss.restapi.services.rest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

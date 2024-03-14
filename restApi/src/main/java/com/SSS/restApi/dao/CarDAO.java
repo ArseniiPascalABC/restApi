@@ -1,6 +1,6 @@
-package com.SSS.restApi.dao;
+package com.sss.restapi.dao;
 
-import com.SSS.restApi.models.Vehicle;
+import com.sss.restapi.models.Vehicle;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

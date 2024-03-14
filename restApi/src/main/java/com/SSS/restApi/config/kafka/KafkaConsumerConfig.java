@@ -1,4 +1,4 @@
-package com.SSS.restApi.config.kafka;
+package com.sss.restapi.config.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;

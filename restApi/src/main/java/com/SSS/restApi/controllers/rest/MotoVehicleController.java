@@ -1,6 +1,6 @@
-package com.SSS.restApi.controllers.rest;
+package com.sss.restapi.controllers.rest;
 
-import com.SSS.restApi.services.rest.MotoVehicleService;
+import com.sss.restapi.services.rest.MotoVehicleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -18,14 +18,19 @@ public class MotoVehicleController implements VehicleController{
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final MotoVehicleService motoVehicleService;
 
+    private static final String VEHICLE = "Vehicle";
+    private static final String METHOD = "Method";
+    private static final String BODY = "Body";
+    private static final String REST_TOPIC = "restTopic";
+
     @Override
     @GetMapping(value = "/", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Object> getVehicleById(@RequestParam("id") Long id) {
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("Vehicle", "Moto");
-        jsonMessage.put("Method", "getVehicleById");
-        jsonMessage.put("Body", id.toString());
-        kafkaTemplate.send("restTopic", jsonMessage.toString());
+        jsonMessage.put(VEHICLE, "Moto");
+        jsonMessage.put(METHOD, "getVehicleById");
+        jsonMessage.put(BODY, id.toString());
+        kafkaTemplate.send(REST_TOPIC, jsonMessage.toString());
 
         return motoVehicleService.processMessageAndGetResponse(jsonMessage.toString());
     }
@@ -34,10 +39,10 @@ public class MotoVehicleController implements VehicleController{
     @GetMapping(value = "/brand", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Object> getVehiclesByBrand(@RequestParam("brand") String brand) {
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("Vehicle", "Moto");
-        jsonMessage.put("Method", "getVehiclesByBrand");
-        jsonMessage.put("Body", brand);
-        kafkaTemplate.send("restTopic", jsonMessage.toString());
+        jsonMessage.put(VEHICLE, "Moto");
+        jsonMessage.put(METHOD, "getVehiclesByBrand");
+        jsonMessage.put(BODY, brand);
+        kafkaTemplate.send(REST_TOPIC, jsonMessage.toString());
 
         return motoVehicleService.processMessageAndGetResponse(jsonMessage.toString());
     }
@@ -46,10 +51,10 @@ public class MotoVehicleController implements VehicleController{
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Object> addVehicle(@RequestBody String requestBody) {
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("Vehicle", "Moto");
-        jsonMessage.put("Method", "addVehicle");
-        jsonMessage.put("Body", requestBody);
-        kafkaTemplate.send("restTopic", jsonMessage.toString());
+        jsonMessage.put(VEHICLE, "Moto");
+        jsonMessage.put(METHOD, "addVehicle");
+        jsonMessage.put(BODY, requestBody);
+        kafkaTemplate.send(REST_TOPIC, jsonMessage.toString());
 
         return motoVehicleService.processMessageAndGetResponse(jsonMessage.toString());
     }

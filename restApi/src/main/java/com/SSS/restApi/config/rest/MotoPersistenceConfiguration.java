@@ -1,4 +1,4 @@
-package com.SSS.restApi.config.rest;
+package com.sss.restapi.config.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 @Configuration
 @PropertySource({"classpath:application.properties"})
 @EnableJpaRepositories(
-        basePackages = "com.SSS.restApi.repositories.moto",
+        basePackages = "com.sss.restapi.repositories.moto",
         entityManagerFactoryRef = "motoEntityManager",
         transactionManagerRef = "motoTransactionManager"
 )
@@ -42,7 +42,7 @@ public class MotoPersistenceConfiguration {
     public LocalContainerEntityManagerFactoryBean motoEntityManager() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(motoDataSource());
-        em.setPackagesToScan("com.SSS.restApi.models.moto");
+        em.setPackagesToScan("com.sss.restapi.models.moto");
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

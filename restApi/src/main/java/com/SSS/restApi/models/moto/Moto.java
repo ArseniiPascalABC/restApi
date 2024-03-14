@@ -1,6 +1,6 @@
-package com.SSS.restApi.models.moto;
+package com.sss.restapi.models.moto;
 
-import com.SSS.restApi.models.Vehicle;
+import com.sss.restapi.models.Vehicle;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

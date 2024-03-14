@@ -1,6 +1,6 @@
-package com.SSS.restApi.repositories.moto;
+package com.sss.restapi.repositories.moto;
 
-import com.SSS.restApi.models.moto.Moto;
+import com.sss.restapi.models.moto.Moto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

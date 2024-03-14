@@ -1,6 +1,6 @@
-package com.SSS.restApi.xmlWrapper.soap;
+package com.sss.restapi.xmlwrapper.soap;
 
-import com.SSS.restApi.models.car.Car;
+import com.sss.restapi.models.car.Car;
 import jakarta.xml.bind.annotation.*;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

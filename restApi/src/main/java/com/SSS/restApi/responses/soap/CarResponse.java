@@ -1,6 +1,6 @@
-package com.SSS.restApi.responses.soap;
+package com.sss.restapi.responses.soap;
 
-import com.SSS.restApi.xmlWrapper.soap.SoapCarListResponse;
+import com.sss.restapi.xmlwrapper.soap.SoapCarListResponse;
 import jakarta.xml.bind.annotation.XmlSeeAlso;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

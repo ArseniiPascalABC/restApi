@@ -1,8 +1,8 @@
-package com.SSS.restApi.controllers.soap;
+package com.sss.restapi.controllers.soap;
 
-import com.SSS.restApi.models.moto.Moto;
-import com.SSS.restApi.responses.soap.MotoResponse;
-import com.SSS.restApi.xmlWrapper.soap.SoapMotoListResponse;
+import com.sss.restapi.models.moto.Moto;
+import com.sss.restapi.responses.soap.MotoResponse;
+import com.sss.restapi.xmlwrapper.soap.SoapMotoListResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jws.WebService;
@@ -25,27 +25,34 @@ import java.util.concurrent.TimeoutException;
 
 @Slf4j
 @RequiredArgsConstructor
-@WebService(serviceName = "MotoService", endpointInterface = "com.SSS.restApi.controllers.soap.MotoService")
+@WebService(serviceName = "MotoService", endpointInterface = "com.sss.restapi.controllers.soap.MotoService")
 @Component
 @ComponentScan("application.properties")
 public class MotoServiceImpl implements MotoService{
 
+    private static final String VEHICLE = "Vehicle";
+    private static final String METHOD = "Method";
+    private static final String BODY = "Body";
+    private static final String SUCCESS = "Success";
+    private static final String MESSAGE = "Message";
+    private static final String ERROR_MESSAGE = "Error sending or receiving message from Kafka";
+    
     private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
-
+    
     @Value("${kafka.soap.topic.name}")
     public String soapTopicName;
     @Override
     public MotoResponse getVehicleById(Long id) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("Vehicle", "Moto");
-        jsonMessage.put("Method", "getVehicleById");
-        jsonMessage.put("Body", id.toString());
+        jsonMessage.put(VEHICLE, "Moto");
+        jsonMessage.put(METHOD, "getVehicleById");
+        jsonMessage.put(BODY, id.toString());
         JSONObject replyJson = sendAndReceiveMessage(jsonMessage);
         if (replyJson == null) {
-            return new MotoResponse(null, "Error sending or receiving message from Kafka", false);
+            return new MotoResponse(null, ERROR_MESSAGE, false);
         }
-        boolean success = replyJson.getBoolean("Success");
-        String message = replyJson.getString("Message");
+        boolean success = replyJson.getBoolean(SUCCESS);
+        String message = replyJson.getString(MESSAGE);
         Moto moto;
         if (replyJson.has("Moto")) {
             ObjectMapper mapper = new ObjectMapper();
@@ -59,16 +66,15 @@ public class MotoServiceImpl implements MotoService{
     @Override
     public MotoResponse getVehiclesByBrand(String brand) throws JsonProcessingException {
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("Vehicle", "Moto");
-        jsonMessage.put("Method", "getVehiclesByBrand");
-        jsonMessage.put("Body", brand);
-        System.out.println(jsonMessage);
+        jsonMessage.put(VEHICLE, "Moto");
+        jsonMessage.put(METHOD, "getVehiclesByBrand");
+        jsonMessage.put(BODY, brand);
         JSONObject replyJson = sendAndReceiveMessage(jsonMessage);
         if (replyJson == null) {
-            return new MotoResponse(null, "Error sending or receiving message from Kafka", false);
+            return new MotoResponse(null, ERROR_MESSAGE, false);
         }
-        boolean success = replyJson.getBoolean("Success");
-        String message = replyJson.getString("Message");
+        boolean success = replyJson.getBoolean(SUCCESS);
+        String message = replyJson.getString(MESSAGE);
         SoapMotoListResponse soapMotoListResponse;
         if (replyJson.has("Data")) {
             ObjectMapper mapper = new ObjectMapper();
@@ -83,27 +89,26 @@ public class MotoServiceImpl implements MotoService{
         ObjectMapper mapper = new ObjectMapper();
         String motoJson = mapper.writeValueAsString(moto);
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("Vehicle", "Moto");
-        jsonMessage.put("Method", "addVehicle");
-        jsonMessage.put("Body", motoJson);
+        jsonMessage.put(VEHICLE, "Moto");
+        jsonMessage.put(METHOD, "addVehicle");
+        jsonMessage.put(BODY, motoJson);
         JSONObject replyJson = sendAndReceiveMessage(jsonMessage);
         if (replyJson == null) {
-            return new MotoResponse(null, "Error sending or receiving message from Kafka", false);
+            return new MotoResponse(null, ERROR_MESSAGE, false);
         }
-        boolean success = replyJson.getBoolean("Success");
-        String message = replyJson.getString("Message");
+        boolean success = replyJson.getBoolean(SUCCESS);
+        String message = replyJson.getString(MESSAGE);
         return new MotoResponse(null, message, success);
     }
 
     private JSONObject sendAndReceiveMessage(JSONObject jsonMessage) {
-        System.out.println("ААА" + soapTopicName);
         return getJsonObject(jsonMessage, replyingKafkaTemplate, "soapTopic");
     }
 
     @Nullable
     static JSONObject getJsonObject(JSONObject jsonMessage, ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate, String topicName) {
-        ProducerRecord<String, String> record = new ProducerRecord<>(topicName, jsonMessage.toString());
-        RequestReplyFuture<String, String, String> replyFuture = replyingKafkaTemplate.sendAndReceive(record);
+        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicName, jsonMessage.toString());
+        RequestReplyFuture<String, String, String> replyFuture = replyingKafkaTemplate.sendAndReceive(producerRecord);
         SendResult<String, String> sendResult;
         try {
             sendResult = replyFuture.getSendFuture().get(10, TimeUnit.SECONDS);
@@ -113,6 +118,7 @@ public class MotoServiceImpl implements MotoService{
             return new JSONObject(consumerRecord.value());
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             MotoServiceImpl.log.error("Error sending or receiving message from Kafka: " + e.getMessage());
+            Thread.currentThread().interrupt();
             return null;
         }
     }

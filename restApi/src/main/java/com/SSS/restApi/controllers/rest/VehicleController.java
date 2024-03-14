@@ -1,4 +1,4 @@
-package com.SSS.restApi.controllers.rest;
+package com.sss.restapi.controllers.rest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

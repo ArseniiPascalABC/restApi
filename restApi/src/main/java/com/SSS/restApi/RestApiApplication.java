@@ -1,4 +1,4 @@
-package com.SSS.restApi;
+package com.sss.restapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

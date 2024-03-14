@@ -1,6 +1,6 @@
-package com.SSS.restApi.xmlWrapper.rest;
+package com.sss.restapi.xmlwrapper.rest;
 
-import com.SSS.restApi.models.car.Car;
+import com.sss.restapi.models.car.Car;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;

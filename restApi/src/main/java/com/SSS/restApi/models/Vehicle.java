@@ -1,4 +1,4 @@
-package com.SSS.restApi.models;
+package com.sss.restapi.models;
 
 import org.springframework.stereotype.Component;
 

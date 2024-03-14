@@ -1,6 +1,6 @@
-package com.SSS.restApi.models.car;
+package com.sss.restapi.models.car;
 
-import com.SSS.restApi.models.Vehicle;
+import com.sss.restapi.models.Vehicle;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.persistence.*;

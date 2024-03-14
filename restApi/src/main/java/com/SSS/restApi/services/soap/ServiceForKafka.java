@@ -1,5 +1,6 @@
-package com.SSS.restApi.services.soap;
+package com.sss.restapi.services.soap;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
@@ -26,8 +27,13 @@ public class ServiceForKafka {
             switch (vehicle){
                 case "Moto" -> jsonReplyMessage = motoService.processMessageAndGetResponse(message);
                 case "Car" -> jsonReplyMessage = carService.processMessageAndGetResponse(message);
+                default -> {
+                    log.error("default Service For Kafka, Ошибка в переданном транспорте");
+                    jsonReplyMessage.put("Message", "Ошибка в переданном транспорте");
+                    jsonReplyMessage.put("Success", false);
+                }
             }
-        }catch (JSONException e) {
+        }catch (JSONException | JsonProcessingException e) {
             log.warn("Исключение " + e);
             jsonReplyMessage.put("Message", "Ошибка в переданных значениях");
             jsonReplyMessage.put("Success", false);
