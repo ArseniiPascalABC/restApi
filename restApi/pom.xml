@@ -69,11 +69,11 @@
 			<artifactId>json</artifactId>
 			<version>20240205</version>
 		</dependency>
-        <dependency>
-            <groupId>com.sss</groupId>
-            <artifactId>restapi</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.4.0</version>
+		</dependency>
     </dependencies>
 
 	<build>

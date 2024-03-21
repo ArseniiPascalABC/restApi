@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @JacksonXmlRootElement(localName = "Cars")
+//добавить карс в свагер
 public class CarListResponse {
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "Car")

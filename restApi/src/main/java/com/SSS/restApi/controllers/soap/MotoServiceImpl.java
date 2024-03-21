@@ -29,7 +29,6 @@ import java.util.concurrent.TimeoutException;
 @Component
 @ComponentScan("application.properties")
 public class MotoServiceImpl implements MotoService{
-
     private static final String VEHICLE = "Vehicle";
     private static final String METHOD = "Method";
     private static final String BODY = "Body";
@@ -41,6 +40,7 @@ public class MotoServiceImpl implements MotoService{
     
     @Value("${kafka.soap.topic.name}")
     public String soapTopicName;
+
     @Override
     public MotoResponse getVehicleById(Long id) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
         JSONObject jsonMessage = new JSONObject();
@@ -102,7 +102,7 @@ public class MotoServiceImpl implements MotoService{
     }
 
     private JSONObject sendAndReceiveMessage(JSONObject jsonMessage) {
-        return getJsonObject(jsonMessage, replyingKafkaTemplate, "soapTopic");
+        return getJsonObject(jsonMessage, replyingKafkaTemplate, soapTopicName);
     }
 
     @Nullable

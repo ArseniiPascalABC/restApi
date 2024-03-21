@@ -1,15 +1,15 @@
 package com.sss.restapi.controllers.soap;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sss.restapi.models.car.Car;
 import com.sss.restapi.responses.soap.CarResponse;
 import com.sss.restapi.xmlwrapper.soap.SoapCarListResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jws.WebService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +22,7 @@ import static com.sss.restapi.controllers.soap.MotoServiceImpl.getJsonObject;
 @Slf4j
 @RequiredArgsConstructor
 @WebService(serviceName = "CarService", endpointInterface = "com.sss.restapi.controllers.soap.CarService")
-@ComponentScan("application.properties")
 public class CarServiceImpl implements CarService{
-
     private static final String VEHICLE = "Vehicle";
     private static final String METHOD = "Method";
     private static final String BODY = "Body";
@@ -33,6 +31,9 @@ public class CarServiceImpl implements CarService{
     private static final String ERROR_MESSAGE = "Error sending or receiving message from Kafka";
 
     private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
+
+    @Value("${kafka.soap.topic.name}")
+    private String soapTopic;
 
     @Override
     public CarResponse getVehicleById(Long id) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
@@ -95,6 +96,6 @@ public class CarServiceImpl implements CarService{
     }
 
     private JSONObject sendAndReceiveMessage(JSONObject jsonMessage) {
-        return getJsonObject(jsonMessage, replyingKafkaTemplate, "soapTopic");
+        return getJsonObject(jsonMessage, replyingKafkaTemplate, soapTopic);
     }
 }
