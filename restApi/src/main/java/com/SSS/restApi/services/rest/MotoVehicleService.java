@@ -26,7 +26,6 @@ public class MotoVehicleService implements VehicleService{
 
     private final MotoDAO motoDAO;
     @Override
-    @KafkaListener(topics = "restTopic", groupId = "restSoap-group", containerFactory = "kafkaListenerContainerFactory")
     public ResponseEntity<Object> processMessageAndGetResponse(String message) {
         String method;
         String vehicle;

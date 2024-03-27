@@ -1,17 +1,16 @@
 package com.sss.restapi.controllers.soap;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sss.restapi.models.moto.Moto;
 import com.sss.restapi.responses.soap.MotoResponse;
 import com.sss.restapi.xmlwrapper.soap.SoapMotoListResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jws.WebService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.requestreply.RequestReplyFuture;
@@ -37,9 +36,8 @@ public class MotoServiceImpl implements MotoService{
     private static final String ERROR_MESSAGE = "Error sending or receiving message from Kafka";
     
     private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
-    
-    @Value("${kafka.soap.topic.name}")
-    public String soapTopicName;
+
+
 
     @Override
     public MotoResponse getVehicleById(Long id) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
@@ -102,7 +100,7 @@ public class MotoServiceImpl implements MotoService{
     }
 
     private JSONObject sendAndReceiveMessage(JSONObject jsonMessage) {
-        return getJsonObject(jsonMessage, replyingKafkaTemplate, soapTopicName);
+        return getJsonObject(jsonMessage, replyingKafkaTemplate, "soapTopic");
     }
 
     @Nullable

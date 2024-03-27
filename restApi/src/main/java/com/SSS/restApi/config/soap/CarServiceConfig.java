@@ -13,9 +13,7 @@ import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 @Configuration
 @RequiredArgsConstructor
 public class CarServiceConfig {
-
     private final Bus bus;
-
     private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
 
     @Bean
@@ -26,7 +24,7 @@ public class CarServiceConfig {
     }
 
     @Bean
-    public Endpoint motoEndpoint(){
+    public Endpoint motoEndpoint() {
         EndpointImpl endpoint = new EndpointImpl(bus, new MotoServiceImpl(replyingKafkaTemplate));
         endpoint.publish("/MotoService");
         return endpoint;

@@ -9,7 +9,6 @@ import jakarta.jws.WebService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -31,9 +30,6 @@ public class CarServiceImpl implements CarService{
     private static final String ERROR_MESSAGE = "Error sending or receiving message from Kafka";
 
     private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
-
-    @Value("${kafka.soap.topic.name}")
-    private String soapTopic;
 
     @Override
     public CarResponse getVehicleById(Long id) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
@@ -96,6 +92,6 @@ public class CarServiceImpl implements CarService{
     }
 
     private JSONObject sendAndReceiveMessage(JSONObject jsonMessage) {
-        return getJsonObject(jsonMessage, replyingKafkaTemplate, soapTopic);
+        return getJsonObject(jsonMessage, replyingKafkaTemplate, "soapTopic");
     }
 }

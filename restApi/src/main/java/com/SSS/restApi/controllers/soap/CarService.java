@@ -54,4 +54,5 @@ public interface CarService {
             className = "sample.ws.service.addCarResponse"
     )
     CarResponse addVehicle(@WebParam(name = "car") Car car) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException;
+
 }
