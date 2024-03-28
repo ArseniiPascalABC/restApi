@@ -72,7 +72,6 @@ public class CarVehicleController implements VehicleController {
     @ApiResponse(responseCode = "200", description = "Vehicles by brand was found",
             content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = CarListResponse.class)))
     @ApiResponse(responseCode = "400", description = "Bad request",
-            //реализовать как то норм возвращение, обработать еррор мб
             content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ResponseEntity.class)))
     @Override
     @GetMapping(value = "/brand", produces = MediaType.APPLICATION_XML_VALUE)
