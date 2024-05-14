@@ -36,7 +36,7 @@ public class FolderUploadController {
             return "Папка успешно загружена и сохранена в проекте.";
         } catch (IOException e) {
             log.error("Ошибка загрузки и сохранения папки: " + e.getMessage());
-            return "Ошибка загрузки и сохранения папки: " + e.getMessage();
+            return "Ошибка загрузки и сохранения папки";
         }
     }
 

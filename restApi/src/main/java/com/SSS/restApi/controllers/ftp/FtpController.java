@@ -32,8 +32,7 @@ import java.util.zip.ZipOutputStream;
 //done - Перевести rest на https (keytool -genkeypair -alias tomcat -keyalg RSA -keysize 2048 -keystore keystore.jks -validity 3650)
 //done - Взаимодействие с ssl сертификаты, (создать jks файл и прикрутить, что бы сервис общался с https, условный get(без сертификата что бы не работал))
 //done - Работа с удаленными папками(share folder) -> сделать локальный путь, что бы перемещать оттуда папки куда-либо
-
-//Coverage найти где и как, покрыть все тестами :)
+//done - Coverage найти где и как, покрыть все тестами
 
 //Spring cloud НАПИСАТЬ
 public class FtpController {
