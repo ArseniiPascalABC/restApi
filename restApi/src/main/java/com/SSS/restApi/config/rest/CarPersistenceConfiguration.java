@@ -27,13 +27,15 @@ import java.util.HashMap;
 public class CarPersistenceConfiguration {
 
     private final Environment env;
+
     @Autowired
-    public CarPersistenceConfiguration(Environment env){
+    public CarPersistenceConfiguration(Environment env) {
         this.env = env;
     }
+
     @Primary
     @Bean
-    @ConfigurationProperties(prefix="spring.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource carDataSource() {
         return DataSourceBuilder.create().build();
     }

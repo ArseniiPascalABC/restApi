@@ -21,7 +21,7 @@ import static com.sss.restapi.controllers.soap.MotoServiceImpl.getJsonObject;
 @Slf4j
 @RequiredArgsConstructor
 @WebService(serviceName = "CarService", endpointInterface = "com.sss.restapi.controllers.soap.CarService")
-public class CarServiceImpl implements CarService{
+public class CarServiceImpl implements CarService {
     private static final String VEHICLE = "Vehicle";
     private static final String METHOD = "Method";
     private static final String BODY = "Body";
@@ -32,7 +32,8 @@ public class CarServiceImpl implements CarService{
     private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
 
     @Override
-    public CarResponse getVehicleById(Long id) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
+    public CarResponse getVehicleById(Long id)
+            throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
         JSONObject jsonMessage = new JSONObject();
         jsonMessage.put(VEHICLE, "Car");
         jsonMessage.put(METHOD, "getVehicleById");
@@ -54,7 +55,8 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public CarResponse getVehiclesByBrand(String brand) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
+    public CarResponse getVehiclesByBrand(String brand)
+            throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
         JSONObject jsonMessage = new JSONObject();
         jsonMessage.put(VEHICLE, "Car");
         jsonMessage.put(METHOD, "getVehiclesByBrand");
@@ -74,8 +76,10 @@ public class CarServiceImpl implements CarService{
         }
         return new CarResponse(soapCarListResponse, message, success);
     }
+
     @Override
-    public CarResponse addVehicle(Car car) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
+    public CarResponse addVehicle(Car car)
+            throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
         ObjectMapper mapper = new ObjectMapper();
         String carJson = mapper.writeValueAsString(car);
         JSONObject jsonMessage = new JSONObject();

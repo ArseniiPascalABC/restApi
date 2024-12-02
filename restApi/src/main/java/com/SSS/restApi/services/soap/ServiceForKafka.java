@@ -24,7 +24,7 @@ public class ServiceForKafka {
         try {
             JSONObject jsonMessage = new JSONObject(message);
             String vehicle = jsonMessage.getString("Vehicle");
-            switch (vehicle){
+            switch (vehicle) {
                 case "Moto" -> jsonReplyMessage = motoService.processMessageAndGetResponse(message);
                 case "Car" -> jsonReplyMessage = carService.processMessageAndGetResponse(message);
                 default -> {
@@ -33,8 +33,8 @@ public class ServiceForKafka {
                     jsonReplyMessage.put("Success", false);
                 }
             }
-        }catch (JSONException | JsonProcessingException e) {
-            log.warn("Исключение " + e);
+        } catch (JSONException | JsonProcessingException e) {
+            log.warn("Исключение {}", e.getMessage());
             jsonReplyMessage.put("Message", "Ошибка в переданных значениях");
             jsonReplyMessage.put("Success", false);
         }

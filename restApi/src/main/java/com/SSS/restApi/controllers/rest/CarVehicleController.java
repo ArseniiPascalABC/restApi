@@ -17,7 +17,12 @@ import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -58,7 +63,8 @@ public class CarVehicleController implements VehicleController {
     @ApiResponse(responseCode = "400", description = "Bad request",
             content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ResponseEntity.class)))
     @GetMapping(value = "/soapRequest", produces = MediaType.APPLICATION_XML_VALUE)
-    public CarResponse soapRequestGetVehicleById(Long id) throws ExecutionException, InterruptedException, JsonProcessingException, TimeoutException {
+    public CarResponse soapRequestGetVehicleById(Long id)
+            throws ExecutionException, InterruptedException, JsonProcessingException, TimeoutException {
         String wsdlUrl = "http://localhost:8080/Service/CarService?wsdl";
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
         factory.setServiceClass(CarService.class);
@@ -92,8 +98,11 @@ public class CarVehicleController implements VehicleController {
             content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ResponseEntity.class)))
     @Override
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Object> addVehicle(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "JSON representation of the vehicle", required = true,
-            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Car.class))) @RequestBody String requestBody) {
+    public ResponseEntity<Object> addVehicle(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "JSON representation of the vehicle", required = true,
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Car.class)))
+            @RequestBody String requestBody
+    ) {
         JSONObject jsonMessage = new JSONObject();
         jsonMessage.put(VEHICLE, "Car");
         jsonMessage.put(METHOD, "addVehicle");

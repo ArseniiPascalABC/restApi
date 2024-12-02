@@ -18,7 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,12 +35,6 @@ import java.util.zip.ZipOutputStream;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/ftp/files")
-//done - Перевести rest на https (keytool -genkeypair -alias tomcat -keyalg RSA -keysize 2048 -keystore keystore.jks -validity 3650)
-//done - Взаимодействие с ssl сертификаты, (создать jks файл и прикрутить, что бы сервис общался с https, условный get(без сертификата что бы не работал))
-//done - Работа с удаленными папками(share folder) -> сделать локальный путь, что бы перемещать оттуда папки куда-либо
-//done - Coverage найти где и как, покрыть все тестами
-
-//Spring cloud НАПИСАТЬ
 public class FtpController {
     private final CarRepository carRepository;
     private final MotoRepository motoRepository;
@@ -45,7 +45,7 @@ public class FtpController {
     @EventListener
     public void handleFilesSentEvent(FilesSentEvent event) {
         String filename = event.getFilename();
-        String fileNameWithoutZip = filename.substring(0, filename.length()-4);
+        String fileNameWithoutZip = filename.substring(0, filename.length() - 4);
         try (InputStream inputStream = ftpSessionFactory.getSession().readRaw(filename)) {
             File tempFile = File.createTempFile(fileNameWithoutZip, ".zip");
             try (OutputStream outputStream = new FileOutputStream(tempFile)) {
@@ -78,17 +78,25 @@ public class FtpController {
             String currentTime = dateFormat.format(new Date());
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             try (ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
-                ftpService.addFileToZip(zipOutputStream, "cars.csv", ftpService.createCsvString(VehicleHeaders.getAllHeaders(), carData));
-                ftpService.addFileToZip(zipOutputStream, "motos.csv", ftpService.createCsvString(VehicleHeaders.getAllHeaders(), motoData));
+                ftpService.addFileToZip(
+                        zipOutputStream,
+                        "cars.csv",
+                        ftpService.createCsvString(VehicleHeaders.getAllHeaders(), carData)
+                );
+                ftpService.addFileToZip(
+                        zipOutputStream,
+                        "motos.csv",
+                        ftpService.createCsvString(VehicleHeaders.getAllHeaders(), motoData)
+                );
             }
 
             InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
             String filename = "vehicles-" + currentTime + ".zip";
             ftpSessionFactory.getSession().write(inputStream, filename);
-            log.info("FtpController PostController putAllVehiclesToFtpServer done at " + currentTime);
+            log.info("FtpController PostController putAllVehiclesToFtpServer done at {}", currentTime);
             eventPublisher.publishEvent(new FilesSentEvent(this, filename));
         } catch (Exception e) {
-            log.error("FtpController PostController putAllVehiclesToFtpServer error " + e);
+            log.error("FtpController PostController putAllVehiclesToFtpServer error {}", e.getMessage());
         }
     }
 

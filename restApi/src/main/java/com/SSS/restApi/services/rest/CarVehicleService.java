@@ -1,17 +1,16 @@
 package com.sss.restapi.services.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sss.restapi.dao.CarDAO;
 import com.sss.restapi.models.car.Car;
 import com.sss.restapi.repositories.car.CarRepository;
 import com.sss.restapi.xmlwrapper.rest.CarListResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -37,7 +36,7 @@ public class CarVehicleService implements VehicleService {
             vehicle = jsonMessage.getString("Vehicle");
             body = jsonMessage.getString("Body");
         } catch (JSONException e) {
-            log.warn("Исключение " + e);
+            log.warn("Исключение {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing message");
         }
         if ("Car".equals(vehicle)) {
@@ -45,18 +44,25 @@ public class CarVehicleService implements VehicleService {
                 case "getVehicleById" -> {
                     Car car = carRepository.findById(Long.parseLong(body)).orElse(null);
                     if (car == null) {
-                        log.warn("CarController getVehicleById, the vehicle the user was looking for(in dataBase cars) was not found");
-                        return ResponseEntity.ok().body("<message>Ничего не найдено по id = " + body + " в базе данных cars</message>");
+                        log.warn(
+                                "CarController getVehicleById, the vehicle the user was looking for(in dataBase cars) was not found");
+                        return ResponseEntity
+                                .ok()
+                                .body("<message>Ничего не найдено по id = " + body + " в базе данных cars</message>");
                     } else {
-                        log.info("CarController getVehicleById, the vehicle the user was looking for was found in database cars");
+                        log.info(
+                                "CarController getVehicleById, the vehicle the user was looking for was found in database cars");
                         return ResponseEntity.ok(car);
                     }
                 }
                 case "getVehiclesByBrand" -> {
                     List<Car> cars = carRepository.findAllByBrandIgnoreCase(body);
                     if (cars.isEmpty()) {
-                        log.warn("CarController getVehiclesByBrand, the vehicles the user was looking for were not found in database cars");
-                        return ResponseEntity.ok().body("<message>Ничего не найдено по бренду " + body + " в базе данных cars</message>");
+                        log.warn(
+                                "CarController getVehiclesByBrand, the vehicles the user was looking for were not found in database cars");
+                        return ResponseEntity
+                                .ok()
+                                .body("<message>Ничего не найдено по бренду " + body + " в базе данных cars</message>");
                     }
                     CarListResponse carListResponse = new CarListResponse(cars);
                     log.info("CarController getVehiclesByBrand, the vehicles the user was looking for were found");
@@ -71,7 +77,9 @@ public class CarVehicleService implements VehicleService {
                         return ResponseEntity.status(HttpStatus.CREATED).body("<message>Автомобиль добавлен</message>");
                     } catch (Exception e) {
                         log.error("CarController addVehicle, Car was not added");
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("<message>Автомобиль не был добавлен</message>");
+                        return ResponseEntity
+                                .status(HttpStatus.BAD_REQUEST)
+                                .body("<message>Автомобиль не был добавлен</message>");
                     }
                 }
                 default -> {

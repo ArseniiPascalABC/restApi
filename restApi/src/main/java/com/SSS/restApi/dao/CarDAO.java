@@ -14,10 +14,12 @@ import javax.sql.DataSource;
 public class CarDAO {
 
     private final JdbcTemplate jdbcTemplate;
+
     @Autowired
     public CarDAO(@Qualifier("carDataSource") DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
     public void save(Vehicle vehicle) {
         String sql = "INSERT INTO cars (brand, model) VALUES (?, ?)";
         jdbcTemplate.update(sql, vehicle.getBrand(), vehicle.getModel());

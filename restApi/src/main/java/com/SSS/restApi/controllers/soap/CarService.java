@@ -1,8 +1,8 @@
 package com.sss.restapi.controllers.soap;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sss.restapi.models.car.Car;
 import com.sss.restapi.responses.soap.CarResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
@@ -27,7 +27,8 @@ public interface CarService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.getCarByIdResponse"
     )
-    CarResponse getVehicleById(@WebParam(name = "id") Long id) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException;
+    CarResponse getVehicleById(@WebParam(name = "id") Long id)
+            throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException;
 
     @WebResult(name = "carsByBrand")
     @RequestWrapper(
@@ -40,7 +41,8 @@ public interface CarService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.getCarsByBrandResponse"
     )
-    CarResponse getVehiclesByBrand(@WebParam(name = "brand") String brand) throws JAXBException, ExecutionException, InterruptedException, TimeoutException, JsonProcessingException;
+    CarResponse getVehiclesByBrand(@WebParam(name = "brand") String brand)
+            throws JAXBException, ExecutionException, InterruptedException, TimeoutException, JsonProcessingException;
 
     @WebResult(name = "car")
     @RequestWrapper(
@@ -53,6 +55,7 @@ public interface CarService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.addCarResponse"
     )
-    CarResponse addVehicle(@WebParam(name = "car") Car car) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException;
+    CarResponse addVehicle(@WebParam(name = "car") Car car)
+            throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException;
 
 }

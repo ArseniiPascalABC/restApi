@@ -20,6 +20,7 @@ import java.nio.file.Paths;
 @RequestMapping("/rest/folders")
 public class FolderUploadController {
     private final FolderUploadService folderUploadService;
+
     @PostMapping("/uploadFolder")
     public String handleFolderUpload(@RequestParam("folder") MultipartFile folder) {
         if (folder.isEmpty()) {
@@ -35,7 +36,7 @@ public class FolderUploadController {
             folderUploadService.deleteTempDirectory(tempDir);
             return "Папка успешно загружена и сохранена в проекте.";
         } catch (IOException e) {
-            log.error("Ошибка загрузки и сохранения папки: " + e.getMessage());
+            log.error("Ошибка загрузки и сохранения папки: {}", e.getMessage());
             return "Ошибка загрузки и сохранения папки";
         }
     }

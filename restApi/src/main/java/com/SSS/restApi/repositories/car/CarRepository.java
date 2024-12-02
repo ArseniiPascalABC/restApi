@@ -3,6 +3,7 @@ package com.sss.restapi.repositories.car;
 import com.sss.restapi.models.car.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 @Repository

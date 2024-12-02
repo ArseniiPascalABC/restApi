@@ -7,7 +7,12 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -20,16 +25,19 @@ import java.util.zip.ZipOutputStream;
 public class FtpService {
     public String createCsvString(String[] headers, List<String[]> data) {
         CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
-                .setHeader(headers)
-                .build();
-        try (StringWriter stringWriter = new StringWriter(); final CSVPrinter printer = new CSVPrinter(stringWriter, csvFormat)) {
+                                               .setHeader(headers)
+                                               .build();
+        try (StringWriter stringWriter = new StringWriter();
+             final CSVPrinter printer = new CSVPrinter(stringWriter, csvFormat)
+        ) {
             printer.printRecords(data);
             return stringWriter.toString();
         } catch (IOException e) {
-            log.error("Failed to create CSV string: " + e);
+            log.error("Failed to create CSV string: {}", e.getMessage());
             return "";
         }
     }
+
     public void addFileToZip(ZipOutputStream zipOutputStream, String fileName, String fileContent) throws IOException {
         ZipEntry zipEntry = new ZipEntry(fileName);
         zipOutputStream.putNextEntry(zipEntry);
@@ -49,7 +57,8 @@ public class FtpService {
                 } else {
                     entryDestination.getParentFile().mkdirs();
                     try (InputStream input = zip.getInputStream(entry);
-                         OutputStream output = new FileOutputStream(entryDestination)) {
+                         OutputStream output = new FileOutputStream(entryDestination)
+                    ) {
                         IOUtils.copy(input, output);
                     }
                 }

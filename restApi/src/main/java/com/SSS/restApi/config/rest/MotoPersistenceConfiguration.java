@@ -33,7 +33,7 @@ public class MotoPersistenceConfiguration {
     }
 
     @Bean
-    @ConfigurationProperties(prefix="spring.second-datasource")
+    @ConfigurationProperties(prefix = "spring.second-datasource")
     public DataSource motoDataSource() {
         return DataSourceBuilder.create().build();
     }
@@ -53,6 +53,7 @@ public class MotoPersistenceConfiguration {
 
         return em;
     }
+
     @Bean
     public PlatformTransactionManager motoTransactionManager() {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();

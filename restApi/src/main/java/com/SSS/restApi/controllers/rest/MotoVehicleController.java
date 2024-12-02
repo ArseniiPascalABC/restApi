@@ -7,13 +7,18 @@ import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/rest/motos")
-public class MotoVehicleController implements VehicleController{
+public class MotoVehicleController implements VehicleController {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final MotoVehicleService motoVehicleService;

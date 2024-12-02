@@ -1,8 +1,8 @@
 package com.sss.restapi.controllers.soap;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sss.restapi.models.moto.Moto;
 import com.sss.restapi.responses.soap.MotoResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
@@ -27,7 +27,8 @@ public interface MotoService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.getMotoByIdResponse"
     )
-    MotoResponse getVehicleById(@WebParam(name = "id") Long id) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException;
+    MotoResponse getVehicleById(@WebParam(name = "id") Long id)
+            throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException;
 
     @WebResult(name = "motosByBrand")
     @RequestWrapper(
@@ -40,7 +41,8 @@ public interface MotoService {
             targetNamespace = "http://service.ws.sample/",
             className = "sample.ws.service.getMotosByBrandResponse"
     )
-    MotoResponse getVehiclesByBrand(@WebParam(name = "brand") String brand) throws JAXBException, JsonProcessingException;
+    MotoResponse getVehiclesByBrand(@WebParam(name = "brand") String brand)
+            throws JAXBException, JsonProcessingException;
 
     @WebResult(name = "moto")
     @RequestWrapper(

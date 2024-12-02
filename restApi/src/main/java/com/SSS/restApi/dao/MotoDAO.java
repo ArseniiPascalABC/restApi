@@ -11,13 +11,15 @@ import javax.sql.DataSource;
 
 @Component
 @RequiredArgsConstructor
-public class MotoDAO{
+public class MotoDAO {
     private final JdbcTemplate jdbcTemplate;
+
     @Autowired
     public MotoDAO(@Qualifier("motoDataSource") DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
-    public void save(Vehicle vehicle){
+
+    public void save(Vehicle vehicle) {
         String sql = "INSERT INTO motos (brand, model) VALUES (?, ?)";
         jdbcTemplate.update(sql, vehicle.getBrand(), vehicle.getModel());
     }

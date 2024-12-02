@@ -1,7 +1,8 @@
 package com.sss.restapi.xmlwrapper.soap;
 
 import com.sss.restapi.models.car.Car;
-import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 

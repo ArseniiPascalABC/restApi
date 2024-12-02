@@ -27,20 +27,20 @@ import java.util.concurrent.TimeoutException;
 @WebService(serviceName = "MotoService", endpointInterface = "com.sss.restapi.controllers.soap.MotoService")
 @Component
 @ComponentScan("application.properties")
-public class MotoServiceImpl implements MotoService{
+public class MotoServiceImpl implements MotoService {
     private static final String VEHICLE = "Vehicle";
     private static final String METHOD = "Method";
     private static final String BODY = "Body";
     private static final String SUCCESS = "Success";
     private static final String MESSAGE = "Message";
     private static final String ERROR_MESSAGE = "Error sending or receiving message from Kafka";
-    
+
     private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
 
 
-
     @Override
-    public MotoResponse getVehicleById(Long id) throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
+    public MotoResponse getVehicleById(Long id)
+            throws ExecutionException, InterruptedException, TimeoutException, JsonProcessingException {
         JSONObject jsonMessage = new JSONObject();
         jsonMessage.put(VEHICLE, "Moto");
         jsonMessage.put(METHOD, "getVehicleById");
@@ -82,6 +82,7 @@ public class MotoServiceImpl implements MotoService{
         }
         return new MotoResponse(soapMotoListResponse, message, success);
     }
+
     @Override
     public MotoResponse addVehicle(Moto moto) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -104,18 +105,22 @@ public class MotoServiceImpl implements MotoService{
     }
 
     @Nullable
-    static JSONObject getJsonObject(JSONObject jsonMessage, ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate, String topicName) {
+    static JSONObject getJsonObject(
+            JSONObject jsonMessage,
+            ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate,
+            String topicName
+    ) {
         ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicName, jsonMessage.toString());
         RequestReplyFuture<String, String, String> replyFuture = replyingKafkaTemplate.sendAndReceive(producerRecord);
         SendResult<String, String> sendResult;
         try {
             sendResult = replyFuture.getSendFuture().get(10, TimeUnit.SECONDS);
-            MotoServiceImpl.log.info("Sent ok: " + sendResult.getRecordMetadata());
+            MotoServiceImpl.log.info("Sent ok: {}", sendResult.getRecordMetadata());
             ConsumerRecord<String, String> consumerRecord = replyFuture.get();
-            MotoServiceImpl.log.info("Return value: " + consumerRecord.value());
+            MotoServiceImpl.log.info("Return value: {}", consumerRecord.value());
             return new JSONObject(consumerRecord.value());
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            MotoServiceImpl.log.error("Error sending or receiving message from Kafka: " + e.getMessage());
+            MotoServiceImpl.log.error("Error sending or receiving message from Kafka: {}", e.getMessage());
             Thread.currentThread().interrupt();
             return null;
         }

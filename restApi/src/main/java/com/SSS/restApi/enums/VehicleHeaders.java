@@ -19,7 +19,7 @@ public enum VehicleHeaders {
 
     public static String[] getAllHeaders() {
         return Arrays.stream(values())
-                .map(VehicleHeaders::getHeaderName)
-                .toArray(String[]::new);
+                     .map(VehicleHeaders::getHeaderName)
+                     .toArray(String[]::new);
     }
 }

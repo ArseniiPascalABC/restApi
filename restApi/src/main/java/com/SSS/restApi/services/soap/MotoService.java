@@ -33,7 +33,7 @@ public class MotoService {
             method = jsonMessage.getString("Method");
             body = jsonMessage.getString("Body");
         } catch (JSONException e) {
-            log.warn("Исключение " + e);
+            log.warn("Исключение {}", e.getMessage());
             jsonReplyMessage.put(MESSAGE, "Ошибка в переданных значениях");
             jsonReplyMessage.put(SUCCESS, false);
         }
@@ -41,10 +41,12 @@ public class MotoService {
             case "getVehicleById" -> {
                 Moto moto = motoRepository.findById(Long.parseLong(body)).orElse(null);
                 if (moto == null) {
-                    log.warn("MotoSoapController getVehicleById, the vehicle the user was looking for(in dataBase motos) was not found");
+                    log.warn(
+                            "MotoSoapController getVehicleById, the vehicle the user was looking for(in dataBase motos) was not found");
                     jsonReplyMessage.put(MESSAGE, "Запись не найдена");
                 } else {
-                    log.info("MotoSoapController getVehicleById, the vehicle the user was looking for was found in database motos");
+                    log.info(
+                            "MotoSoapController getVehicleById, the vehicle the user was looking for was found in database motos");
                     jsonReplyMessage.put(MESSAGE, "Запись найдена");
                     ObjectMapper mapper = new ObjectMapper();
                     jsonReplyMessage.put("Moto", mapper.writeValueAsString(moto));
@@ -54,7 +56,8 @@ public class MotoService {
             case "getVehiclesByBrand" -> {
                 List<Moto> motos = motoRepository.findAllByBrandIgnoreCase(body);
                 if (motos.isEmpty()) {
-                    log.warn("MotoController getVehiclesByBrand, the vehicles the user was looking for were not found in database motos");
+                    log.warn(
+                            "MotoController getVehiclesByBrand, the vehicles the user was looking for were not found in database motos");
                     jsonReplyMessage.put(MESSAGE, "Авто не найдены");
                 } else {
                     SoapMotoListResponse motoListResponse = new SoapMotoListResponse(motos);
@@ -74,7 +77,7 @@ public class MotoService {
                     jsonReplyMessage.put(MESSAGE, "Запись добавлена");
                     jsonReplyMessage.put(SUCCESS, true);
                 } catch (Exception e) {
-                    log.error("MotoController addVehicle, Moto was not added " + e);
+                    log.error("MotoController addVehicle, Moto was not added {}", e.getMessage());
                     jsonReplyMessage.put(MESSAGE, "Запись не добавлена");
                     jsonReplyMessage.put(SUCCESS, false);
                 }
