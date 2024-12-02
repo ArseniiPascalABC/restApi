@@ -1,13 +1,17 @@
 package com.sss.restapi.models.car;
 
-import com.sss.restapi.models.Vehicle;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import jakarta.persistence.*;
+import com.sss.restapi.models.Vehicle;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Table(name = "cars")
@@ -15,7 +19,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @JacksonXmlRootElement
 @Data
-public class Car implements Vehicle{
+public class Car implements Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
